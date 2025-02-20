@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "BASE_LOCATION",
+      "type": "java.lang.String",
+      "description": "Description for BASE_LOCATION."
+    },
+    {
+      "name": "DB_NAME",
+      "type": "java.lang.String",
+      "description": "Description for DB_NAME."
+    }
+  ] }
