@@ -4,6 +4,9 @@
     <view class="text-area">
       <text class="title">{{ title }}</text>
     </view>
+    <navigator url="/pages/login/index" open-type="navigate">
+      <button>登錄</button>
+    </navigator>
   </view>
 </template>
 

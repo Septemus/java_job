@@ -17,6 +17,12 @@
 			"style": {
 				"navigationBarTitleText": "my"
 			}
+		},
+		{
+			"path": "pages/login/index",
+			"style": {
+				"navigationBarTitleText": "郵箱登錄"
+			}
 		}
 	],
 	"tabBar": {
