@@ -1,7 +1,7 @@
 <template>
   <view class="container">
     <view class="login-page pc-style">
-      <!-- <img :src="LogoIcon" alt="logo" class="logo-icon" /> -->
+      <img src="/static/images/k-logo.png" alt="logo" class="logo-icon" />
       <view class="mail-login" type="login">
         <view class="common-input">
           <!-- <img :src="" class="left-icon" /> -->
@@ -25,8 +25,8 @@
         </view>
       </view>
       <view class="operation">
-        <a class="forget-pwd" style="text-align: left">注册新帐号</a>
-        <a class="forget-pwd" style="text-align: right">忘记密码？</a>
+        <navigator class="forget-pwd" style="text-align: left">注册新帐号</navigator>
+        <navigator class="forget-pwd" style="text-align: right">忘记密码？</navigator>
       </view>
     </view>
   </view>
@@ -43,11 +43,23 @@ view {
   //   background-image: url("../images/admin-login-bg.jpg");
   background-size: cover;
   object-fit: cover;
-  height: 100%;
-  max-width: 100%;
+  height: 100vh;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  .login-page {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+
+    .logo-icon {
+      display: block;
+      margin: 60px auto;
+      width: 48px;
+      height: 48px;
+    }
+  }
 }
 
 .new-content {
@@ -58,33 +70,12 @@ view {
   width: 980px;
 }
 
-.logo-img {
-  width: 125px;
-  display: block;
-  margin-left: 137.5px;
-}
+// .pc-style {
+//   position: relative;
+//   width: 400px;
+//   height: 464px;
 
-.login-page {
-  overflow: hidden;
-  background: #fff;
-
-  .logo-icon {
-    margin-top: 20px;
-    margin-left: 175px;
-    width: 48px;
-    height: 48px;
-  }
-}
-
-.pc-style {
-  position: relative;
-  width: 400px;
-  height: 464px;
-  background: #fff;
-  border-radius: 4px;
-  -webkit-box-shadow: 2px 2px 6px #aaa;
-  box-shadow: 2px 2px 6px #aaa;
-}
+// }
 
 .login-tab {
   display: -webkit-box;
@@ -144,6 +135,7 @@ view {
   -webkit-box-align: start;
   -ms-flex-align: start;
   align-items: flex-start;
+  margin-bottom: 20px;
 
   .left-icon {
     margin-right: 12px;
@@ -159,8 +151,8 @@ view {
       font-weight: 500;
       font-size: 14px;
       color: #1e1e1e;
-      height: 26px;
-      line-height: 26px;
+      height: 40px;
+      line-height: 40px;
       border: none;
       padding: 0;
       display: block;
@@ -168,7 +160,7 @@ view {
       letter-spacing: 1.5px;
     }
 
-    err-view {
+    .err-view {
       margin-top: 4px;
       height: 16px;
       line-height: 16px;
