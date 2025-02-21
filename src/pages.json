@@ -5,8 +5,45 @@
 			"style": {
 				"navigationBarTitleText": "uni-app"
 			}
+		},
+		{
+			"path": "pages/work/index",
+			"style": {
+				"navigationBarTitleText": "work"
+			}
+		},
+		{
+			"path": "pages/my/index",
+			"style": {
+				"navigationBarTitleText": "my"
+			}
 		}
 	],
+	"tabBar": {
+		"color": "#474747",
+		"selectedColor": "#3B8DFF",
+		"backgroundColor": "#F8F8F8",
+		"list": [
+			{
+				"pagePath": "pages/index/index",
+				"text": "首页",
+				// "iconPath": "static/tabbar/home.png",
+				// "selectedIconPath": "static/tabbar/home-active.png"
+			},
+			{
+				"pagePath": "pages/work/index",
+				"text": "工作台",
+				// "iconPath": "static/tabbar/work.png",
+				// "selectedIconPath": "static/tabbar/work-active.png"
+			},
+			{
+				"pagePath": "pages/my/index",
+				"text": "我的",
+				// "iconPath": "static/tabbar/mine.png",
+				// "selectedIconPath": "static/tabbar/mine-active.png"
+			}
+		]
+	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
