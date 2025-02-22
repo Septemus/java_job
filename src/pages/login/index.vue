@@ -70,6 +70,7 @@ const handleLogin = () => {
       console.log("success==>", userStore.user_token);
     })
     .catch((err) => {
+      console.log(err);
       uni
         .showToast({
           icon: "error",
@@ -96,18 +97,17 @@ const loginSuccess = () => {
 };
 
 const handleWechatLogin = () => {
-  uni
-    .getUserProfile({
+  Promise.all([
+    uni.getUserProfile({
       desc: "获取用户信息",
-    })
-    .then((res) => {
-      console.log(res);
-      return uni.login({
-        provider: "weixin",
-      });
-    })
-    .then((loginRes) => {
-      return userStore.wxLogin(loginRes.code);
+    }),
+    uni.login({
+      provider: "weixin",
+    }),
+  ])
+    .then(([UserProfileData, loginRes]) => {
+      console.log("获取用户信息和获取code成功！");
+      return userStore.wxLogin({ code: loginRes.code, userProfileData: UserProfileData });
     })
     .then((res) => {
       loginSuccess();
@@ -116,6 +116,7 @@ const handleWechatLogin = () => {
       console.log("success==>", userStore.user_token);
     })
     .catch((err) => {
+      console.log(err);
       uni
         .showToast({
           icon: "error",

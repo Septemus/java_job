@@ -1,25 +1,19 @@
 import axios from "axios";
-import type {
-  AxiosInstance,
-  AxiosRequestConfig,
-  AxiosResponse,
-  AxiosError,
-  InternalAxiosRequestConfig,
-} from "axios";
+import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
 import { type IResponse } from "./type";
 import { BASE_URL } from "@/store/constants";
-import adapter from "axios-miniprogram-adapter";
-
+import { UniAdapter } from "uniapp-axios-adapter";
+console.log(BASE_URL);
 const service: AxiosInstance = axios.create({
   // baseURL: import.meta.env.BASE_URL + '',
   baseURL: BASE_URL + "",
   timeout: 15000,
-  adapter: adapter as any,
+  adapter: UniAdapter,
 });
 
 // axios实例拦截请求
 service.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
+  (config: AxiosRequestConfig) => {
     // config.headers.ADMINTOKEN = localStorage.getItem(ADMIN_USER_TOKEN);
     // config.headers.TOKEN = localStorage.getItem(USER_TOKEN);
 
@@ -45,7 +39,7 @@ service.interceptors.response.use(
   },
   // 请求失败
   (error: any) => {
-    console.log(error.response.status);
+    console.log(error);
     if (error.response.status == 404) {
       // todo
     } else if (error.response.status == 403) {

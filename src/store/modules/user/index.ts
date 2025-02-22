@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { loginApi as adminLogin, userLoginApi } from "@/api/user";
+import { loginApi as adminLogin, userLoginApi, type wxLoginData, wxUserLoginApi } from "@/api/user";
 // import { setToken, clearToken } from "/@/utils/auth";
 import { type UserState } from "./types";
 import {
@@ -23,6 +23,26 @@ export const useUserStore = defineStore("user", {
   }),
   getters: {},
   actions: {
+    //微信登陆
+    async wxLogin(wxLoginForm: wxLoginData) {
+      const result = await wxUserLoginApi(wxLoginForm);
+      console.log("result==>", result);
+      debugger;
+      if (result.code === 200) {
+        this.$patch((state) => {
+          state.user_id = result.data.id;
+          state.user_name = result.data.username;
+          state.user_token = result.data.token;
+          console.log("state==>", state);
+        });
+
+        // localStorage.setItem(USER_TOKEN, result.data.token);
+        // localStorage.setItem(USER_NAME, result.data.username);
+        // localStorage.setItem(USER_ID, result.data.id);
+      }
+
+      return result;
+    },
     // 用户登录
     async login(loginForm) {
       const result = await userLoginApi(loginForm);

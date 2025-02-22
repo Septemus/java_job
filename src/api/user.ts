@@ -13,6 +13,7 @@ enum URL {
   userRegister = "/api/user/userRegister",
   updateUserPwd = "/api/user/updatePwd",
   updateUserInfo = "/api/user/updateUserInfo",
+  wxUserLogin = "/api/user/WxUserLogin",
 }
 // interface LoginRes {
 //   token: string;
@@ -21,6 +22,11 @@ enum URL {
 export interface LoginData {
   username: string;
   password: string;
+}
+
+export interface wxLoginData {
+  code: string;
+  userProfileData: UniApp.GetUserProfileRes;
 }
 
 const loginApi = async (data: LoginData) =>
@@ -48,6 +54,15 @@ const updateApi = async (data: any) =>
   });
 const deleteApi = async (params: any) =>
   post<any>({ url: URL.delete, params: params, headers: {} });
+const wxUserLoginApi = async (data: wxLoginData) => {
+  return await post<any>({
+    url: URL.wxUserLogin,
+    data: {
+      code: data.code,
+      userInfo: data.userProfileData.userInfo,
+    },
+  });
+};
 const userLoginApi = async (data: LoginData) => {
   return await post<any>({
     url: URL.userLogin,
@@ -82,4 +97,5 @@ export {
   userRegisterApi,
   updateUserPwdApi,
   updateUserInfoApi,
+  wxUserLoginApi,
 };
