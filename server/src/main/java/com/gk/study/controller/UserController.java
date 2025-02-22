@@ -63,8 +63,8 @@ public class UserController {
     }
 
     // 普通用户登录
-    @RequestMapping(value = "/userLogin", method = RequestMethod.POST)
-    public APIResponse userLogin(User user){
+    @RequestMapping(value = "/userLogin", method = RequestMethod.POST,consumes = {"application/json"})
+    public APIResponse userLogin(@RequestBody User user){
         user.setPassword(DigestUtils.md5DigestAsHex((user.getPassword() + salt).getBytes()));
         User responseUser =  userService.getNormalUser(user);
         if(responseUser != null) {
