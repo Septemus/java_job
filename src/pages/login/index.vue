@@ -6,7 +6,12 @@
         <view class="common-input">
           <!-- <img :src="" class="left-icon" /> -->
           <view class="input-view">
-            <input placeholder="请输入注册邮箱" type="text" class="input" />
+            <input
+              v-model="pageData.loginForm.username"
+              placeholder="请输入注册邮箱"
+              type="text"
+              class="input"
+            />
             <text class="err-view" />
           </view>
           <!---->
@@ -14,25 +19,81 @@
         <view class="common-input">
           <!-- <img :src="PwdIcon" class="left-icon" /> -->
           <view class="input-view">
-            <input placeholder="请输入密码" type="password" class="input" />
+            <input
+              v-model="pageData.loginForm.password"
+              placeholder="请输入密码"
+              type="password"
+              class="input"
+            />
             <text class="err-view"></text>
           </view>
           <!--          <img src="@/assets/pwd-hidden.svg" class="right-icon">-->
           <!---->
         </view>
         <view class="next-btn-view">
-          <button class="next-btn btn-active" style="margin: 16px 0px">登录</button>
+          <button class="next-btn btn-active" style="margin: 16px 0px" @click="handleLogin">
+            登录
+          </button>
         </view>
       </view>
       <view class="operation">
-        <navigator class="forget-pwd" style="text-align: left">注册新帐号</navigator>
+        <navigator url="/pages/register/index" class="forget-pwd" style="text-align: left"
+          >注册新帐号</navigator
+        >
         <navigator class="forget-pwd" style="text-align: right">忘记密码？</navigator>
       </view>
     </view>
   </view>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useUserStore } from "@/store";
+const userStore = useUserStore();
+const pageData = reactive({
+  loginForm: {
+    username: "",
+    password: "",
+  },
+});
+
+const handleLogin = () => {
+  userStore
+    .login({
+      username: pageData.loginForm.username,
+      password: pageData.loginForm.password,
+    })
+    .then((res) => {
+      loginSuccess();
+      console.log("success==>", userStore.user_name);
+      console.log("success==>", userStore.user_id);
+      console.log("success==>", userStore.user_token);
+    })
+    .catch((err) => {
+      uni
+        .showToast({
+          icon: "error",
+          title: err.msg || "登录失败",
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      // message.warn(err.msg || "登录失败");
+    });
+};
+
+const loginSuccess = () => {
+  // router.push({ name: "portal" });
+  // message.success("登录成功！");
+  uni
+    .showToast({
+      icon: "success",
+      title: "登录成功！",
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+</script>
 <style scoped lang="scss">
 view {
   display: block;
