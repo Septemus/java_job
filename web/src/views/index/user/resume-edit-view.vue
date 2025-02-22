@@ -7,7 +7,7 @@
         <div class="item flex-view">
           <div class="label">头像</div>
           <div class="right-box avatar-box flex-view">
-            <img v-if="tData.form && tData.form.avatar" :src="tData.form.avatar" class="avatar">
+            <img v-if="tData.form && tData.form.cover" :src="tData.form.cover" class="avatar">
             <img v-else :src="AvatarIcon" class="avatar">
             <div class="change-tips flex-view">
                 <a-upload
@@ -111,6 +111,7 @@ let tData = reactive({
     mobile: undefined,
     description: undefined,
     downloadUrl: undefined,
+    cover: undefined
   }
 })
 
@@ -143,8 +144,8 @@ const getDetail =()=> {
   detailApi({userId: userId}).then(res => {
     if(res.data){
       tData.form = res.data
-      if (tData.form.avatar) {
-        tData.form.avatar = BASE_URL  + tData.form.avatar
+      if (tData.form.cover) {
+        tData.form.cover = BASE_URL + "/api/staticfiles/resume/" + tData.form.cover
       }
       if(tData.form.raw) {
         tData.form.downloadUrl = BASE_URL + tData.form.raw
