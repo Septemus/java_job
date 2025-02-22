@@ -22,7 +22,7 @@
             <input
               v-model="pageData.loginForm.password"
               placeholder="请输入密码"
-              type="password"
+              password
               class="input"
             />
             <text class="err-view"></text>
@@ -42,6 +42,7 @@
         >
         <navigator class="forget-pwd" style="text-align: right">忘记密码？</navigator>
       </view>
+      <button class="useWechat" type="primary" @tap="handleWechatLogin">微信登陆</button>
     </view>
   </view>
 </template>
@@ -93,6 +94,39 @@ const loginSuccess = () => {
       console.log(err);
     });
 };
+
+const handleWechatLogin = () => {
+  uni
+    .getUserProfile({
+      desc: "获取用户信息",
+    })
+    .then((res) => {
+      console.log(res);
+      return uni.login({
+        provider: "weixin",
+      });
+    })
+    .then((loginRes) => {
+      return userStore.wxLogin(loginRes.code);
+    })
+    .then((res) => {
+      loginSuccess();
+      console.log("success==>", userStore.user_name);
+      console.log("success==>", userStore.user_id);
+      console.log("success==>", userStore.user_token);
+    })
+    .catch((err) => {
+      uni
+        .showToast({
+          icon: "error",
+          title: err.msg || "登录失败",
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      // message.warn(err.msg || "登录失败");
+    });
+};
 </script>
 <style scoped lang="scss">
 view {
@@ -106,19 +140,27 @@ view {
   object-fit: cover;
   height: 100vh;
   width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
   .login-page {
     overflow: hidden;
     width: 100%;
     height: 100%;
-
+    position: relative;
     .logo-icon {
       display: block;
       margin: 60px auto;
       width: 48px;
       height: 48px;
+    }
+
+    button.useWechat {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50%;
     }
   }
 }
@@ -243,12 +285,6 @@ view {
   width: 100%;
   outline: none;
   cursor: pointer;
-}
-
-button {
-  background: transparent;
-  padding: 0;
-  border-width: 0px;
 }
 
 button,
