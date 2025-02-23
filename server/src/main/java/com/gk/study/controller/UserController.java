@@ -103,6 +103,17 @@ public class UserController {
         return new APIResponse(ResponeCode.SUCCESS, "查询成功", u);
     }
 
+    @GetMapping(value = "/verify")
+    public APIResponse verify(@RequestParam String token) {
+        logger.info("token==>" + token);
+        User user = userService.getUserByToken(token);
+        if (user != null && user.getRole().equals(String.valueOf(User.NormalUser))) {
+            return new APIResponse(ResponeCode.SUCCESS, "token校验成功！", user);
+        } else {
+            return new APIResponse(ResponeCode.FAIL, "未登录");
+        }
+    }
+
     // 普通用户注册
     @RequestMapping(value = "/userRegister", method = RequestMethod.POST)
     @Transactional
