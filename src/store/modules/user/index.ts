@@ -10,6 +10,7 @@ import {
   ADMIN_USER_NAME,
   ADMIN_USER_TOKEN,
 } from "@/store/constants";
+import { type ILogin } from "@/utils/http/axios/type";
 
 export const useUserStore = defineStore("user", {
   state: (): UserState => ({
@@ -44,7 +45,7 @@ export const useUserStore = defineStore("user", {
       return result;
     },
     // 用户登录
-    async login(loginForm) {
+    async login(loginForm: ILogin) {
       const result = await userLoginApi(loginForm);
       console.log("result==>", result);
 
@@ -68,9 +69,12 @@ export const useUserStore = defineStore("user", {
     async logout() {
       // await userLogout();
       this.$patch((state) => {
-        localStorage.removeItem(USER_ID);
-        localStorage.removeItem(USER_NAME);
-        localStorage.removeItem(USER_TOKEN);
+        // localStorage.removeItem(USER_ID);
+        // localStorage.removeItem(USER_NAME);
+        // localStorage.removeItem(USER_TOKEN);
+        uni.setStorageSync(USER_ID, null);
+        uni.setStorageSync(USER_NAME, null);
+        uni.setStorageSync(USER_TOKEN, null);
 
         state.user_id = undefined;
         state.user_name = undefined;
@@ -79,7 +83,7 @@ export const useUserStore = defineStore("user", {
     },
 
     // 管理员登录
-    async adminLogin(loginForm) {
+    async adminLogin(loginForm: ILogin) {
       const result = await adminLogin(loginForm);
       console.log("result==>", result);
 

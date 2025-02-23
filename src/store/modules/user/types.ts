@@ -8,3 +8,9 @@ export interface UserState {
   admin_user_name: any;
   admin_user_token: any;
 }
+export interface UserEssential {
+  id: string;
+  username: string;
+  token: string;
+  nickname: string;
+}

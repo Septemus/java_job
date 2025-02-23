@@ -50,14 +50,14 @@ service.interceptors.response.use(
   },
 );
 
-const request = <T = any>(config: AxiosRequestConfig): Promise<T> => {
+const request = (config: AxiosRequestConfig): Promise<IResponse> => {
   const conf = config;
   return new Promise((resolve, reject) => {
     service
       .request<any, AxiosResponse<IResponse>>(conf)
       .then((res: AxiosResponse<IResponse>) => {
         const data = res.data;
-        resolve(data as T);
+        resolve(data);
       })
       .catch((err) => {
         reject(err);
@@ -65,11 +65,11 @@ const request = <T = any>(config: AxiosRequestConfig): Promise<T> => {
   });
 };
 
-export function get<T = any>(config: AxiosRequestConfig): Promise<T> {
+export function get<T = any>(config: AxiosRequestConfig): Promise<IResponse<T>> {
   return request({ ...config, method: "GET" });
 }
 
-export function post<T = any>(config: AxiosRequestConfig): Promise<T> {
+export function post<T = any>(config: AxiosRequestConfig): Promise<IResponse<T>> {
   return request({
     ...config,
     headers: {

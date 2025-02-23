@@ -1,4 +1,5 @@
 // 权限问题后期增加
+import { type UserEssential } from "@/store/modules/user/types";
 import { get, post } from "@/utils/http/axios";
 // import { UserState } from "@/store/modules/user/types";
 // import axios from 'axios';
@@ -56,7 +57,7 @@ const updateApi = async (data: any) =>
 const deleteApi = async (params: any) =>
   post<any>({ url: URL.delete, params: params, headers: {} });
 const wxUserLoginApi = async (data: wxLoginData) => {
-  return await post<any>({
+  return await post<UserEssential>({
     url: URL.wxUserLogin,
     data: {
       code: data.code,
@@ -65,7 +66,7 @@ const wxUserLoginApi = async (data: wxLoginData) => {
   });
 };
 const userLoginApi = async (data: LoginData) => {
-  return await post<any>({
+  return await post<UserEssential>({
     url: URL.userLogin,
     data,
     headers: { "Content-Type": "multipart/form-data;charset=utf-8" },
