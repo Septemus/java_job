@@ -1,7 +1,7 @@
 import axios from "axios";
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
 import { type IResponse } from "./type";
-import { BASE_URL } from "@/store/constants";
+import { ADMIN_USER_TOKEN, BASE_URL, USER_TOKEN } from "@/store/constants";
 import { UniAdapter } from "uniapp-axios-adapter";
 console.log(BASE_URL);
 const service: AxiosInstance = axios.create({
@@ -13,10 +13,11 @@ const service: AxiosInstance = axios.create({
 
 // axios实例拦截请求
 service.interceptors.request.use(
-  (config: AxiosRequestConfig) => {
+  (config) => {
     // config.headers.ADMINTOKEN = localStorage.getItem(ADMIN_USER_TOKEN);
     // config.headers.TOKEN = localStorage.getItem(USER_TOKEN);
-
+    config.headers.ADMINTOKEN = uni.getStorageSync(ADMIN_USER_TOKEN);
+    config.headers.TOKEN = uni.getStorageSync(USER_TOKEN);
     return config;
   },
   (error: AxiosError) => {
@@ -38,13 +39,13 @@ service.interceptors.response.use(
     }
   },
   // 请求失败
-  (error: any) => {
+  (error) => {
     console.log(error);
-    if (error.response.status == 404) {
-      // todo
-    } else if (error.response.status == 403) {
-      // todo
-    }
+    // if (error.response.status == 404) {
+    //   // todo
+    // } else if (error.response.status == 403) {
+    //   // todo
+    // }
     return Promise.reject(error);
   },
 );

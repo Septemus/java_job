@@ -27,7 +27,6 @@ export const useUserStore = defineStore("user", {
     async wxLogin(wxLoginForm: wxLoginData) {
       const result = await wxUserLoginApi(wxLoginForm);
       console.log("result==>", result);
-      debugger;
       if (result.code === 200) {
         this.$patch((state) => {
           state.user_id = result.data.id;
@@ -35,7 +34,8 @@ export const useUserStore = defineStore("user", {
           state.user_token = result.data.token;
           console.log("state==>", state);
         });
-
+        uni.setStorageSync(USER_TOKEN, result.data.token);
+        uni.setStorageSync(USER_ID, result.data.id);
         // localStorage.setItem(USER_TOKEN, result.data.token);
         // localStorage.setItem(USER_NAME, result.data.username);
         // localStorage.setItem(USER_ID, result.data.id);
@@ -55,7 +55,8 @@ export const useUserStore = defineStore("user", {
           state.user_token = result.data.token;
           console.log("state==>", state);
         });
-
+        uni.setStorageSync(USER_TOKEN, result.data.token);
+        uni.setStorageSync(USER_ID, result.data.id);
         // localStorage.setItem(USER_TOKEN, result.data.token);
         // localStorage.setItem(USER_NAME, result.data.username);
         // localStorage.setItem(USER_ID, result.data.id);

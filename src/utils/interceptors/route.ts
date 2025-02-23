@@ -47,14 +47,16 @@ const navigateToInterceptor: UniNamespace.InterceptorOptions = {
         // return args;
       })
       .catch(() => {
-        return uni.reLaunch({
-          url: loginRoute,
-        });
+        return uni
+          .reLaunch({
+            url: loginRoute,
+          })
+          .then(() => {
+            return Promise.reject({ msg: "verify token failed!" });
+          });
       });
   },
-  success() {
-    console.log("token校验成功！");
-  },
+  success() {},
 };
 
 export const routeInterceptor = {
