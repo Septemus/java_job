@@ -1,7 +1,7 @@
 <template>
   <view class="container">
     <view class="login-page pc-style">
-      <img src="/static/images/k-logo.png" alt="logo" class="logo-icon" />
+      <img src="/static/logo.png" alt="logo" class="logo-icon" />
       <view class="mail-login" type="login">
         <view class="common-input">
           <!-- <img :src="" class="left-icon" /> -->
@@ -31,7 +31,12 @@
           <!---->
         </view>
         <view class="next-btn-view">
-          <button class="next-btn btn-active" style="margin: 16px 0px" @click="handleLogin">
+          <button
+            class="next-btn btn-active"
+            type="primary"
+            style="margin: 16px 0px"
+            @click="handleLogin"
+          >
             登录
           </button>
         </view>
@@ -42,6 +47,21 @@
         >
         <navigator class="forget-pwd" style="text-align: right">忘记密码？</navigator>
       </view>
+
+      <checkbox-group
+        class="agreement"
+        @change="
+          (e) => {
+            agreement = !agreement;
+          }
+        "
+      >
+        <label>
+          <checkbox :checked="agreement" />我已阅读并同意<navigator>《用户协议》</navigator
+          ><navigator>《隐私政策》</navigator>
+        </label>
+      </checkbox-group>
+
       <button class="useWechat" type="primary" @tap="handleWechatLogin">微信登陆</button>
     </view>
   </view>
@@ -49,6 +69,7 @@
 
 <script setup lang="ts">
 import { useUserStore } from "@/store";
+const agreement = ref(false);
 const userStore = useUserStore();
 const pageData = reactive({
   loginForm: {
@@ -56,12 +77,35 @@ const pageData = reactive({
     password: "",
   },
 });
-
+const forceAgreement = () => {
+  return new Promise((resolve, rej) => {
+    if (!agreement.value) {
+      uni
+        .showModal({
+          title: "阅读并同意",
+          content: "《用户协议》《隐私政策》",
+          confirmText: "同意",
+          cancelText: "取消",
+        })
+        .then((res) => {
+          agreement.value = true;
+          resolve(res.confirm);
+        })
+        .catch((err) => {
+          rej("请先同意用户协议！");
+        });
+    } else {
+      resolve(true);
+    }
+  });
+};
 const handleLogin = () => {
-  userStore
-    .login({
-      username: pageData.loginForm.username,
-      password: pageData.loginForm.password,
+  forceAgreement()
+    .then((res) => {
+      return userStore.login({
+        username: pageData.loginForm.username,
+        password: pageData.loginForm.password,
+      });
     })
     .then((res) => {
       loginSuccess();
@@ -109,14 +153,17 @@ const loginSuccess = () => {
 };
 
 const handleWechatLogin = () => {
-  Promise.all([
-    uni.getUserProfile({
-      desc: "获取用户信息",
-    }),
-    uni.login({
-      provider: "weixin",
-    }),
-  ])
+  forceAgreement()
+    .then(() => {
+      return Promise.all([
+        uni.getUserProfile({
+          desc: "获取用户信息",
+        }),
+        uni.login({
+          provider: "weixin",
+        }),
+      ]);
+    })
     .then(([UserProfileData, loginRes]) => {
       console.log("获取用户信息和获取code成功！");
       return userStore.wxLogin({ code: loginRes.code, userProfileData: UserProfileData });
@@ -175,6 +222,16 @@ view {
       transform: translateX(-50%);
       width: 50%;
     }
+    .agreement {
+      margin-top: 40px;
+      font-size: 13px;
+      text-align: center;
+      color: rgba(51, 51, 51, 0.6);
+      navigator {
+        display: inline;
+        color: #13386c;
+      }
+    }
   }
 }
 
@@ -193,52 +250,52 @@ view {
 
 // }
 
-.login-tab {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  color: #1e1e1e;
-  font-size: 14px;
-  color: #1e1e1e;
-  font-weight: 500;
-  height: 46px;
-  line-height: 44px;
-  margin-bottom: 40px;
-  border-bottom: 1px solid #c3c9d5;
+// .login-tab {
+//   display: -webkit-box;
+//   display: -ms-flexbox;
+//   display: flex;
+//   color: #1e1e1e;
+//   font-size: 14px;
+//   color: #1e1e1e;
+//   font-weight: 500;
+//   height: 46px;
+//   line-height: 44px;
+//   margin-bottom: 40px;
+//   border-bottom: 1px solid #c3c9d5;
 
-  view {
-    position: relative;
-    -webkit-box-flex: 1;
-    -ms-flex: 1;
-    flex: 1;
-    text-align: center;
-    cursor: pointer;
-  }
+//   view {
+//     position: relative;
+//     -webkit-box-flex: 1;
+//     -ms-flex: 1;
+//     flex: 1;
+//     text-align: center;
+//     cursor: pointer;
+//   }
 
-  .tabline {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: 0 auto;
-    display: inline-block;
-    width: 0;
-    height: 2px;
-    background: #3d5b96;
-    -webkit-transition: width 0.5s cubic-bezier(0.46, 1, 0.23, 1.52);
-    transition: width 0.5s cubic-bezier(0.46, 1, 0.23, 1.52);
-  }
+//   .tabline {
+//     position: absolute;
+//     bottom: 0;
+//     left: 0;
+//     right: 0;
+//     margin: 0 auto;
+//     display: inline-block;
+//     width: 0;
+//     height: 2px;
+//     background: #3d5b96;
+//     -webkit-transition: width 0.5s cubic-bezier(0.46, 1, 0.23, 1.52);
+//     transition: width 0.5s cubic-bezier(0.46, 1, 0.23, 1.52);
+//   }
 
-  tab-selected {
-    color: #1e1e1e;
-    font-weight: 500;
-  }
+//   tab-selected {
+//     color: #1e1e1e;
+//     font-weight: 500;
+//   }
 
-  .mail-login,
-  .tel-login {
-    padding: 0 28px;
-  }
-}
+//   .mail-login,
+//   .tel-login {
+//     padding: 0 28px;
+//   }
+// }
 
 .mail-login {
   margin: 0px 24px;
@@ -287,9 +344,7 @@ view {
 }
 
 .next-btn {
-  background: #3d5b96;
   border-radius: 4px;
-  color: #fff;
   font-size: 14px;
   font-weight: 500;
   height: 40px;
