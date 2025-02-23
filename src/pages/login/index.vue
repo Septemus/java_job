@@ -8,7 +8,7 @@
           <view class="input-view">
             <input
               v-model="pageData.loginForm.username"
-              placeholder="请输入注册邮箱"
+              placeholder="请输入用户名"
               type="text"
               class="input"
             />
