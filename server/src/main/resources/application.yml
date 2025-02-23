@@ -41,3 +41,8 @@ actable:
     type: mysql
 mybatis-plus:
   mapper-locations: classpath*:com/gitee/sunchenbin/mybatis/actable/mapping/*/*.xml
+
+wechat:
+  appId: wxcfdba2e12f054712
+  appSecret: 5fde8b7221c90b8554becafbfe70dafb
+  wxApi: https://api.weixin.qq.com/sns/jscode2session

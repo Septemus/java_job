@@ -9,5 +9,15 @@
       "name": "DB_NAME",
       "type": "java.lang.String",
       "description": "Description for DB_NAME."
+    },
+    {
+      "name": "Wechat.AppId",
+      "type": "java.lang.String",
+      "description": "Description for Wechat.AppId."
+    },
+    {
+      "name": "Wechat.AppSecret",
+      "type": "java.lang.String",
+      "description": "Description for Wechat.AppSecret."
     }
   ] }

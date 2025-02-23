@@ -6,6 +6,7 @@ import com.gk.study.entity.User;
 import com.gk.study.permission.Access;
 import com.gk.study.permission.AccessLevel;
 import com.gk.study.service.UserService;
+import com.gk.study.utils.WxUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,9 @@ public class UserController {
     private final static Logger logger = LoggerFactory.getLogger(UserController.class);
 
     String salt = "abcd1234";
+
+    @Autowired
+    WxUtil wxUtil;
 
     @Autowired
     UserService userService;
@@ -72,6 +76,31 @@ public class UserController {
         }else {
             return new APIResponse(ResponeCode.FAIL, "用户名或密码错误");
         }
+    }
+
+    /**
+     * Controller for WeChat user
+     * @author joe
+     * @param form the WeChat user form, consisting of userinfo and code
+     * @return The information of WeChat user corresponding to {@code form}
+     */
+    @RequestMapping(value = "/WxUserLogin", method = RequestMethod.POST,consumes = {"application/json"})
+    public APIResponse<User> WxUserLogin(@RequestBody User.WxUserLoginForm form){
+        String openId=wxUtil.getOpenIdByTempCode(form.code);
+        User u=userService.getUserDetail(openId);
+        if(u == null) {
+            u=new User();
+            u.setCreateTime(String.valueOf(System.currentTimeMillis()));
+            u.setNickname(form.userInfo.nickName);
+            u.setAvatar(form.userInfo.avatarUrl);
+            u.setId(openId);
+            u.setUsername(openId);
+            u.setRole(String.valueOf(User.NormalUser));
+            u.setToken(DigestUtils.md5DigestAsHex((u.getUsername() + salt).getBytes()));
+            u.setGender(form.userInfo.gender);
+            userService.createUser(u);
+        }
+        return new APIResponse(ResponeCode.SUCCESS, "查询成功", u);
     }
 
     // 普通用户注册

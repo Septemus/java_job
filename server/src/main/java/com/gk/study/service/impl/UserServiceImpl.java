@@ -49,7 +49,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public void createUser(User user) {
-        user.setId(UUID.randomUUID().toString());
+        if(user.getId() == null){
+            user.setId(UUID.randomUUID().toString());
+        }
         userMapper.insert(user);
     }
 
