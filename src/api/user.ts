@@ -14,6 +14,7 @@ enum URL {
   updateUserPwd = "/api/user/updatePwd",
   updateUserInfo = "/api/user/updateUserInfo",
   wxUserLogin = "/api/user/WxUserLogin",
+  verify = "/api/user/verify",
 }
 // interface LoginRes {
 //   token: string;
@@ -86,6 +87,15 @@ const updateUserInfoApi = async (data: any) =>
     headers: { "Content-Type": "multipart/form-data;charset=utf-8" },
   });
 
+const verifyApi = async (token: string) => {
+  return await get<any>({
+    url: URL.verify,
+    params: {
+      token,
+    },
+  });
+};
+
 export {
   loginApi,
   listApi,
@@ -98,4 +108,5 @@ export {
   updateUserPwdApi,
   updateUserInfoApi,
   wxUserLoginApi,
+  verifyApi,
 };

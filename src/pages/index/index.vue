@@ -11,6 +11,9 @@
 </template>
 
 <script setup lang="ts">
+onShow(() => {
+  uni.switchTab({ url: "/pages/index/index" });
+});
 const title = ref("Hello");
 </script>
 
