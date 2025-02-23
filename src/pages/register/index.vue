@@ -1,0 +1,311 @@
+<template>
+  <view class="container">
+    <view class="register-page pc-style">
+      <img src="/static/logo.png" alt="logo" class="logo-icon" />
+      <view class="mail-login">
+        <view class="common-input">
+          <!-- <img :src="" class="left-icon" /> -->
+          <view class="input-view">
+            <input
+              v-model="pageData.loginForm.username"
+              placeholder="请输入用户名"
+              type="text"
+              class="input"
+            />
+            <text class="err-view" />
+          </view>
+          <!---->
+        </view>
+        <view class="common-input">
+          <!-- <img :src="PwdIcon" class="left-icon" /> -->
+          <view class="input-view">
+            <input
+              v-model="pageData.loginForm.password"
+              placeholder="请输入密码"
+              password
+              class="input"
+            />
+            <text class="err-view"></text>
+          </view>
+          <!--          <img src="@/assets/pwd-hidden.svg" class="right-icon">-->
+          <!---->
+        </view>
+        <view class="common-input">
+          <view class="input-view">
+            <input placeholder="请重新输入密码" password class="input" />
+            <text class="err-view"></text>
+          </view>
+        </view>
+        <view class="next-btn-view">
+          <button class="next-btn btn-active" type="primary" style="margin: 16px 0px" @click="">
+            注册
+          </button>
+          <button class="next-btn btn-active" type="warn" style="margin: 16px 0px" @click="">
+            重置
+          </button>
+        </view>
+        <navigator class="backLogin" url="/pages/login/index" open-type="navigate"
+          >返回登陆</navigator
+        >
+      </view>
+      <button class="useWechat" type="primary" @tap="handleWechatLogin">微信一键注册</button>
+    </view>
+  </view>
+</template>
+
+<script setup lang="ts">
+import { useUserStore } from "@/store";
+const userStore = useUserStore();
+const pageData = reactive({
+  loginForm: {
+    username: "",
+    password: "",
+    repassword: "",
+  },
+});
+const registerSuccess = () => {
+  // router.push({ name: "portal" });
+  // message.success("登录成功！");
+  const duration = 1500;
+  uni
+    .showToast({
+      icon: "success",
+      title: "注册成功！",
+      duration,
+    })
+    .then(() => {
+      return new Promise((res) => {
+        setTimeout(res, duration);
+      });
+    })
+    .then(() => {
+      uni.switchTab({
+        url: "/pages/login/index",
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+const handleWechatLogin = () => {
+  Promise.all([
+    uni.getUserProfile({
+      desc: "获取用户信息",
+    }),
+    uni.login({
+      provider: "weixin",
+    }),
+  ])
+    .then(([UserProfileData, loginRes]) => {
+      console.log("获取用户信息和获取code成功！");
+      return userStore.wxLogin({ code: loginRes.code, userProfileData: UserProfileData });
+    })
+    .then((res) => {
+      registerSuccess();
+      console.log("success==>", userStore.user_name);
+      console.log("success==>", userStore.user_id);
+      console.log("success==>", userStore.user_token);
+    })
+    .catch((err) => {
+      console.log(err);
+      uni
+        .showToast({
+          icon: "error",
+          title: err.msg || "登录失败",
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      // message.warn(err.msg || "登录失败");
+    });
+};
+</script>
+<style scoped lang="scss">
+view {
+  display: block;
+}
+
+.container {
+  //background-color: #f1f1f1;
+  //   background-image: url("../images/admin-login-bg.jpg");
+  background-size: cover;
+  object-fit: cover;
+  height: 100vh;
+  width: 100%;
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
+  .register-page {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    .logo-icon {
+      display: block;
+      margin: 60px auto;
+      width: 48px;
+      height: 48px;
+    }
+
+    button.useWechat {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50%;
+    }
+    .agreement {
+      margin-top: 40px;
+      font-size: 13px;
+      text-align: center;
+      color: rgba(51, 51, 51, 0.6);
+      navigator {
+        display: inline;
+        color: #13386c;
+      }
+    }
+  }
+}
+
+.new-content {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 80px auto 0;
+  width: 980px;
+}
+
+// .pc-style {
+//   position: relative;
+//   width: 400px;
+//   height: 464px;
+
+// }
+
+// .login-tab {
+//   display: -webkit-box;
+//   display: -ms-flexbox;
+//   display: flex;
+//   color: #1e1e1e;
+//   font-size: 14px;
+//   color: #1e1e1e;
+//   font-weight: 500;
+//   height: 46px;
+//   line-height: 44px;
+//   margin-bottom: 40px;
+//   border-bottom: 1px solid #c3c9d5;
+
+//   view {
+//     position: relative;
+//     -webkit-box-flex: 1;
+//     -ms-flex: 1;
+//     flex: 1;
+//     text-align: center;
+//     cursor: pointer;
+//   }
+
+//   .tabline {
+//     position: absolute;
+//     bottom: 0;
+//     left: 0;
+//     right: 0;
+//     margin: 0 auto;
+//     display: inline-block;
+//     width: 0;
+//     height: 2px;
+//     background: #3d5b96;
+//     -webkit-transition: width 0.5s cubic-bezier(0.46, 1, 0.23, 1.52);
+//     transition: width 0.5s cubic-bezier(0.46, 1, 0.23, 1.52);
+//   }
+
+//   tab-selected {
+//     color: #1e1e1e;
+//     font-weight: 500;
+//   }
+
+//   .mail-login,
+//   .tel-login {
+//     padding: 0 28px;
+//   }
+// }
+
+.mail-login {
+  margin: 0px 24px;
+}
+
+.common-input {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: flex-start;
+  margin-bottom: 20px;
+
+  .left-icon {
+    margin-right: 12px;
+    width: 24px;
+  }
+
+  .input-view {
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+
+    .input {
+      font-weight: 500;
+      font-size: 14px;
+      color: #1e1e1e;
+      height: 40px;
+      line-height: 40px;
+      border: none;
+      padding: 0;
+      display: block;
+      width: 100%;
+      letter-spacing: 1.5px;
+    }
+
+    .err-view {
+      margin-top: 4px;
+      height: 16px;
+      line-height: 16px;
+      font-size: 12px;
+      color: #f62a2a;
+    }
+  }
+}
+.next-btn-view {
+  display: flex;
+  justify-content: space-between;
+  .next-btn {
+    display: block;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    width: 45%;
+    outline: none;
+    cursor: pointer;
+  }
+}
+
+button,
+input,
+select,
+textarea {
+  margin: 0;
+  padding: 0;
+  outline: none;
+}
+
+.backLogin {
+  width: 100%;
+  display: block;
+  text-align: center;
+  color: #3d5b96;
+  margin-top: 20px;
+  font-size: 13px;
+}
+</style>

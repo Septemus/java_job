@@ -14,6 +14,12 @@
 			}
 		},
 		{
+			"path": "pages/register/index",
+			"style": {
+				"navigationBarTitleText": "注册"
+			}
+		},
+		{
 			"path": "pages/work/index",
 			"style": {
 				"navigationBarTitleText": "work"
