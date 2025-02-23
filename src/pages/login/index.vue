@@ -208,6 +208,77 @@ view {
     width: 100%;
     height: 100%;
     position: relative;
+    .mail-login {
+      margin: 0px 24px;
+
+      .common-input {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: start;
+        -ms-flex-align: start;
+        align-items: flex-start;
+        margin-bottom: 20px;
+
+        .left-icon {
+          margin-right: 12px;
+          width: 24px;
+        }
+
+        .input-view {
+          -webkit-box-flex: 1;
+          -ms-flex: 1;
+          flex: 1;
+
+          .input {
+            font-weight: 500;
+            font-size: 14px;
+            color: #1e1e1e;
+            height: 40px;
+            line-height: 40px;
+            border: none;
+            padding: 0;
+            display: block;
+            width: 100%;
+            letter-spacing: 1.5px;
+          }
+
+          .err-view {
+            margin-top: 4px;
+            height: 16px;
+            line-height: 16px;
+            font-size: 12px;
+            color: #f62a2a;
+          }
+        }
+      }
+      .next-btn {
+        border-radius: 4px;
+        font-size: 14px;
+        font-weight: 500;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        width: 100%;
+        outline: none;
+        cursor: pointer;
+      }
+    }
+    .operation {
+      display: flex;
+      flex-direction: row;
+      margin: 0 24px;
+      .forget-pwd {
+        //text-align: center;
+        display: block;
+        overflow: hidden;
+        flex: 1;
+        margin: 0 auto;
+        color: #3d5b96;
+        font-size: 14px;
+        cursor: pointer;
+      }
+    }
     .logo-icon {
       display: block;
       margin: 60px auto;
@@ -297,64 +368,6 @@ view {
 //   }
 // }
 
-.mail-login {
-  margin: 0px 24px;
-}
-
-.common-input {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  align-items: flex-start;
-  margin-bottom: 20px;
-
-  .left-icon {
-    margin-right: 12px;
-    width: 24px;
-  }
-
-  .input-view {
-    -webkit-box-flex: 1;
-    -ms-flex: 1;
-    flex: 1;
-
-    .input {
-      font-weight: 500;
-      font-size: 14px;
-      color: #1e1e1e;
-      height: 40px;
-      line-height: 40px;
-      border: none;
-      padding: 0;
-      display: block;
-      width: 100%;
-      letter-spacing: 1.5px;
-    }
-
-    .err-view {
-      margin-top: 4px;
-      height: 16px;
-      line-height: 16px;
-      font-size: 12px;
-      color: #f62a2a;
-    }
-  }
-}
-
-.next-btn {
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 500;
-  height: 40px;
-  line-height: 40px;
-  text-align: center;
-  width: 100%;
-  outline: none;
-  cursor: pointer;
-}
-
 button,
 input,
 select,
@@ -362,22 +375,5 @@ textarea {
   margin: 0;
   padding: 0;
   outline: none;
-}
-
-.operation {
-  display: flex;
-  flex-direction: row;
-  margin: 0 24px;
-}
-
-.forget-pwd {
-  //text-align: center;
-  display: block;
-  overflow: hidden;
-  flex: 1;
-  margin: 0 auto;
-  color: #3d5b96;
-  font-size: 14px;
-  cursor: pointer;
 }
 </style>
