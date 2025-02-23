@@ -86,10 +86,22 @@ const handleLogin = () => {
 const loginSuccess = () => {
   // router.push({ name: "portal" });
   // message.success("登录成功！");
+  const duration = 1500;
   uni
     .showToast({
       icon: "success",
       title: "登录成功！",
+      duration,
+    })
+    .then(() => {
+      return new Promise((res) => {
+        setTimeout(res, duration);
+      });
+    })
+    .then(() => {
+      uni.switchTab({
+        url: "/pages/index/index",
+      });
     })
     .catch((err) => {
       console.log(err);
