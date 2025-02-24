@@ -41,7 +41,7 @@ public class UserController {
     UserService userService;
 
     @Value("${File.uploadPath}")
-    private String uploadPath;
+    private static String uploadPath;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public APIResponse list(String keyword){
@@ -96,7 +96,6 @@ public class UserController {
             u.setAvatar(form.userInfo.avatarUrl);
             u.setId(openId);
             u.setUsername(openId);
-            u.setRole(String.valueOf(User.NormalUser));
             u.setToken(DigestUtils.md5DigestAsHex((u.getUsername() + salt).getBytes()));
             u.setGender(form.userInfo.gender);
             userService.createUser(u);
@@ -131,25 +130,8 @@ public class UserController {
             if(!user.getPassword().equals(user.getRePassword())) {
                 return new APIResponse(ResponeCode.FAIL, "密码不一致");
             }
-            String md5Str = DigestUtils.md5DigestAsHex((user.getPassword() + salt).getBytes());
-            // 设置密码
-            user.setPassword(md5Str);
-            md5Str = DigestUtils.md5DigestAsHex((user.getUsername() + salt).getBytes());
-            // 设置token
-            user.setToken(md5Str);
-
-            String avatar = saveAvatar(user);
-            if(!StringUtils.isEmpty(avatar)) {
-                user.avatar = avatar;
-            }
-            // 设置角色
-            user.setRole(String.valueOf(User.NormalUser));
-            // 设置状态
-            user.setStatus("0");
-            user.setCreateTime(new Timestamp(System.currentTimeMillis()));
-
-            userService.createUser(user);
-            return new APIResponse(ResponeCode.SUCCESS, "创建成功");
+            user=userService.createUser(user);
+            return new APIResponse(ResponeCode.SUCCESS, "创建成功",user);
         }
         return new APIResponse(ResponeCode.FAIL, "创建失败");
     }
@@ -164,20 +146,8 @@ public class UserController {
             if(userService.getUserByUserName(user.getUsername()) != null) {
                 return new APIResponse(ResponeCode.FAIL, "用户名重复");
             }
-            String md5Str = DigestUtils.md5DigestAsHex((user.getPassword() + salt).getBytes());
-            // 设置密码
-            user.setPassword(md5Str);
-            md5Str = DigestUtils.md5DigestAsHex((user.getUsername() + salt).getBytes());
-            // 设置token
-            user.setToken(md5Str);
-            user.setCreateTime(new Timestamp(System.currentTimeMillis()));
-
-            String avatar = saveAvatar(user);
-            if(!StringUtils.isEmpty(avatar)) {
-                user.avatar = avatar;
-            }
-            userService.createUser(user);
-            return new APIResponse(ResponeCode.SUCCESS, "创建成功");
+            user=userService.createUser(user);
+            return new APIResponse(ResponeCode.SUCCESS, "创建成功",user);
         }
         return new APIResponse(ResponeCode.FAIL, "创建失败");
     }
@@ -251,7 +221,7 @@ public class UserController {
 
     }
 
-    public String saveAvatar(User user) throws IOException {
+    public static String saveAvatar(User user) throws IOException {
         MultipartFile file = user.getAvatarFile();
         String newFileName = null;
         if(file !=null && !file.isEmpty()) {

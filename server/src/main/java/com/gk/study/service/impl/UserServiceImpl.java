@@ -8,13 +8,20 @@ import com.gk.study.entity.User;
 import com.gk.study.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
+import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
+
+import static com.gk.study.controller.UserController.saveAvatar;
 
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
+
+    private static String salt = "abcd1234";
     @Autowired
     UserMapper userMapper;
 
@@ -48,11 +55,27 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public void createUser(User user) {
+    public User createUser(User user) {
         if(user.getId() == null){
             user.setId(UUID.randomUUID().toString());
         }
+        String md5Str = DigestUtils.md5DigestAsHex((user.getPassword() + salt).getBytes());
+        // 设置密码
+        user.setPassword(md5Str);
+        md5Str = DigestUtils.md5DigestAsHex((user.getUsername() + salt).getBytes());
+        // 设置token
+        user.setToken(md5Str);
+
+        try {
+            String avatar = saveAvatar(user);
+            if(!org.springframework.util.StringUtils.isEmpty(avatar)) {
+                user.avatar = avatar;
+            }
+        }catch (Exception e){}
+        user.setCreateTime(new Timestamp(System.currentTimeMillis()));
+        user.setRole(String.valueOf(User.NormalUser));
         userMapper.insert(user);
+        return user;
     }
 
     @Override

@@ -9,7 +9,7 @@ public interface UserService {
     List<User> getUserList(String keyword);
     User getAdminUser(User user);
     User getNormalUser(User user);
-    void createUser(User user);
+    User createUser(User user);
     void deleteUser(String id);
 
     void updateUser(User user);
