@@ -1,6 +1,7 @@
 // 权限问题后期增加
 import { type UserEssential } from "@/store/modules/user/types";
 import { get, post } from "@/utils/http/axios";
+import { type ILogin } from "@/utils/http/axios/type";
 // import { UserState } from "@/store/modules/user/types";
 // import axios from 'axios';
 enum URL {
@@ -21,17 +22,15 @@ enum URL {
 //   token: string;
 // }
 
-export interface LoginData {
-  username: string;
-  password: string;
+export interface regData extends ILogin {
+  rePassword: string;
 }
-
 export interface wxLoginData {
   code: string;
   userProfileData: UniApp.GetUserProfileRes;
 }
 
-const loginApi = async (data: LoginData) =>
+const loginApi = async (data: ILogin) =>
   post<any>({
     url: URL.login,
     data,
@@ -65,14 +64,14 @@ const wxUserLoginApi = async (data: wxLoginData) => {
     },
   });
 };
-const userLoginApi = async (data: LoginData) => {
+const userLoginApi = async (data: ILogin) => {
   return await post<UserEssential>({
     url: URL.userLogin,
     data,
     headers: { "Content-Type": "multipart/form-data;charset=utf-8" },
   });
 };
-const userRegisterApi = async (data: any) =>
+const userRegisterApi = async (data: regData) =>
   post<any>({
     url: URL.userRegister,
     params: {},

@@ -1,5 +1,11 @@
 import { defineStore } from "pinia";
-import { loginApi as adminLogin, userLoginApi, type wxLoginData, wxUserLoginApi } from "@/api/user";
+import {
+  loginApi as adminLogin,
+  userLoginApi,
+  type wxLoginData,
+  wxUserLoginApi,
+  type regData,
+} from "@/api/user";
 // import { setToken, clearToken } from "/@/utils/auth";
 import { type UserState } from "./types";
 import {
@@ -11,7 +17,7 @@ import {
   ADMIN_USER_TOKEN,
 } from "@/store/constants";
 import { type ILogin } from "@/utils/http/axios/type";
-
+import { userRegisterApi } from "@/api/user";
 export const useUserStore = defineStore("user", {
   state: (): UserState => ({
     user_id: undefined,
@@ -24,6 +30,26 @@ export const useUserStore = defineStore("user", {
   }),
   getters: {},
   actions: {
+    //注册
+    async register(regForm: regData) {
+      const result = await userRegisterApi(regForm);
+      console.log("result==>", result);
+      if (result.code === 200) {
+        this.$patch((state) => {
+          state.user_id = result.data.id;
+          state.user_name = result.data.username;
+          state.user_token = result.data.token;
+          console.log("state==>", state);
+        });
+        uni.setStorageSync(USER_TOKEN, result.data.token);
+        uni.setStorageSync(USER_ID, result.data.id);
+        // localStorage.setItem(USER_TOKEN, result.data.token);
+        // localStorage.setItem(USER_NAME, result.data.username);
+        // localStorage.setItem(USER_ID, result.data.id);
+      }
+
+      return result;
+    },
     //微信登陆
     async wxLogin(wxLoginForm: wxLoginData) {
       const result = await wxUserLoginApi(wxLoginForm);

@@ -35,11 +35,11 @@
         <view class="common-input">
           <view class="input-view">
             <input
+              v-model="pageData.loginForm.rePassword"
               placeholder="请重新输入密码"
-              v-model="pageData.loginForm.repassword"
               password
-              @input="checkPasswordSame"
               class="input"
+              @input="checkPasswordSame"
             />
             <text class="err-view">
               {{ showPassWordNotSameErr ? "两次输入密码不一致，请重新输入！" : "" }}
@@ -80,7 +80,7 @@ const userStore = useUserStore();
 const initialForm = {
   username: "",
   password: "",
-  repassword: "",
+  rePassword: "",
 };
 const pageData = reactive({ loginForm: { ...initialForm } });
 const resetPageData = () => {
@@ -99,7 +99,7 @@ const pswFormatCorrect = computed(() => {
 });
 const emptyField = computed(() => {
   return (
-    !pageData.loginForm.username || !pageData.loginForm.password || !pageData.loginForm.repassword
+    !pageData.loginForm.username || !pageData.loginForm.password || !pageData.loginForm.rePassword
   );
 });
 const registerSuccess = () => {
@@ -172,27 +172,13 @@ const handleRegister = () => {
       title: "注册信息有误！",
     });
   }
-  userRegisterApi({
-    username: pageData.loginForm.username,
-    password: pageData.loginForm.password,
-    rePassword: pageData.loginForm.repassword,
-  })
+  userStore
+    .register(pageData.loginForm)
     .then((res) => {
-      return uni.showToast({
-        icon: "success",
-        title: "注册成功！",
-        duration,
-      });
-    })
-    .then(() => {
-      return new Promise((res) => {
-        setTimeout(res, duration);
-      });
-    })
-    .then(() => {
-      uni.switchTab({
-        url: "/pages/index/index",
-      });
+      registerSuccess();
+      console.log("success==>", userStore.user_name);
+      console.log("success==>", userStore.user_id);
+      console.log("success==>", userStore.user_token);
     })
     .catch((err) => {
       console.log(err);
@@ -208,7 +194,7 @@ const handleRegister = () => {
     });
 };
 const checkPasswordSame = () => {
-  if (pageData.loginForm.password !== pageData.loginForm.repassword) {
+  if (pageData.loginForm.password !== pageData.loginForm.rePassword) {
     showPassWordNotSameErr.value = true;
   } else {
     showPassWordNotSameErr.value = false;
