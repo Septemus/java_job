@@ -14,7 +14,8 @@
     ],
     "types": [
       "@dcloudio/types",
-      "@uni-helper/uni-app-types"
+      "@uni-helper/uni-app-types",
+      "@uni-helper/uni-ui-types"
     ],
     "skipLibCheck": true,
     "strict": true

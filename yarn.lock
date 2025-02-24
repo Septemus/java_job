@@ -2298,10 +2298,17 @@
     "@typescript-eslint/types" "8.24.1"
     eslint-visitor-keys "^4.2.0"
 
-"@uni-helper/uni-app-types@^1.0.0-alpha.6":
+"@uni-helper/uni-app-types@1.0.0-alpha.6", "@uni-helper/uni-app-types@^1.0.0-alpha.6":
   version "1.0.0-alpha.6"
   resolved "https://registry.npmmirror.com/@uni-helper/uni-app-types/-/uni-app-types-1.0.0-alpha.6.tgz#08fc7ae163a29c1b6c026fe08d3a7898b0c58c13"
   integrity sha512-t9AKDYBmDaz4IW0fgtBt25ubEzf7kyUeMlHaBaG5nyNGd6pVuDpYkABhsnNPDiZcaHAoN6SbX1SQQx5axDOWbA==
+
+"@uni-helper/uni-ui-types@^1.0.0-alpha.6":
+  version "1.0.0-alpha.6"
+  resolved "https://registry.npmmirror.com/@uni-helper/uni-ui-types/-/uni-ui-types-1.0.0-alpha.6.tgz#b85f9367370e52b0d3e3862cb225e3a94d4a0e5b"
+  integrity sha512-2KuAup2M7rPVzpLaXhhnxCD/Cs5VQYiqzC9XNI/VZuA88+ApPmHzkwyS0THSHnz1VbDIGX/Ju69nj+mApfYKDw==
+  dependencies:
+    "@uni-helper/uni-app-types" "1.0.0-alpha.6"
 
 "@unocss/astro@66.0.0":
   version "66.0.0"
