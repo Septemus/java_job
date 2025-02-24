@@ -115,9 +115,9 @@ public class UserController {
     }
 
     // 普通用户注册
-    @RequestMapping(value = "/userRegister", method = RequestMethod.POST)
+    @RequestMapping(value = "/userRegister", method = RequestMethod.POST,consumes = {"application/json"})
     @Transactional
-    public APIResponse userRegister(User user) throws IOException {
+    public APIResponse userRegister(@RequestBody User user) throws IOException {
 
         if (!StringUtils.isEmpty(user.getUsername())
                 && !StringUtils.isEmpty(user.getPassword())
