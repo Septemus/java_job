@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 @Data
 @TableName("b_user")
@@ -47,7 +48,7 @@ public class User implements Serializable {
     @TableField
     public String token;
     @TableField
-    public String createTime;
+    public Timestamp createTime;
     @TableField
     public String pushEmail;
     @TableField

@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 /**
@@ -90,7 +91,7 @@ public class UserController {
         User u=userService.getUserDetail(openId);
         if(u == null) {
             u=new User();
-            u.setCreateTime(String.valueOf(System.currentTimeMillis()));
+            u.setCreateTime(new Timestamp(System.currentTimeMillis()));
             u.setNickname(form.userInfo.nickName);
             u.setAvatar(form.userInfo.avatarUrl);
             u.setId(openId);
@@ -145,7 +146,7 @@ public class UserController {
             user.setRole(String.valueOf(User.NormalUser));
             // 设置状态
             user.setStatus("0");
-            user.setCreateTime(String.valueOf(System.currentTimeMillis()));
+            user.setCreateTime(new Timestamp(System.currentTimeMillis()));
 
             userService.createUser(user);
             return new APIResponse(ResponeCode.SUCCESS, "创建成功");
@@ -169,7 +170,7 @@ public class UserController {
             md5Str = DigestUtils.md5DigestAsHex((user.getUsername() + salt).getBytes());
             // 设置token
             user.setToken(md5Str);
-            user.setCreateTime(String.valueOf(System.currentTimeMillis()));
+            user.setCreateTime(new Timestamp(System.currentTimeMillis()));
 
             String avatar = saveAvatar(user);
             if(!StringUtils.isEmpty(avatar)) {
