@@ -11,8 +11,9 @@
               placeholder="请输入用户名"
               type="text"
               class="input"
+              @input="checkUsernameFormatCorrect"
             />
-            <text class="err-view" />
+            <text class="err-view">{{ userNameFormatErrText }}</text>
           </view>
           <!---->
         </view>
@@ -24,23 +25,42 @@
               placeholder="请输入密码"
               password
               class="input"
+              @input="checkpswFormatCorrect"
             />
-            <text class="err-view"></text>
+            <text class="err-view">{{ pswFormatErrText }}</text>
           </view>
           <!--          <img src="@/assets/pwd-hidden.svg" class="right-icon">-->
           <!---->
         </view>
         <view class="common-input">
           <view class="input-view">
-            <input placeholder="请重新输入密码" password class="input" />
-            <text class="err-view"></text>
+            <input
+              placeholder="请重新输入密码"
+              v-model="pageData.loginForm.repassword"
+              password
+              @input="checkPasswordSame"
+              class="input"
+            />
+            <text class="err-view">
+              {{ showPassWordNotSameErr ? "两次输入密码不一致，请重新输入！" : "" }}
+            </text>
           </view>
         </view>
         <view class="next-btn-view">
-          <button class="next-btn btn-active" type="primary" style="margin: 16px 0px" @click="">
+          <button
+            class="next-btn btn-active"
+            type="primary"
+            style="margin: 16px 0px"
+            @tap="handleRegister"
+          >
             注册
           </button>
-          <button class="next-btn btn-active" type="warn" style="margin: 16px 0px" @click="">
+          <button
+            class="next-btn btn-active"
+            type="warn"
+            style="margin: 16px 0px"
+            @click="resetPageData"
+          >
             重置
           </button>
         </view>
@@ -55,13 +75,32 @@
 
 <script setup lang="ts">
 import { useUserStore } from "@/store";
+import { userRegisterApi } from "@/api/user";
 const userStore = useUserStore();
-const pageData = reactive({
-  loginForm: {
-    username: "",
-    password: "",
-    repassword: "",
-  },
+const initialForm = {
+  username: "",
+  password: "",
+  repassword: "",
+};
+const pageData = reactive({ loginForm: { ...initialForm } });
+const resetPageData = () => {
+  Object.assign(pageData, { loginForm: { ...initialForm } });
+};
+const userNameFormat = /^[\w]{6,30}$/;
+const pswFormat = /^[\w]{6,30}$/;
+const showPassWordNotSameErr = ref(false);
+const userNameFormatErrText = ref("");
+const pswFormatErrText = ref("");
+const userNameFormatCorrect = computed(() => {
+  return userNameFormat.test(pageData.loginForm.username);
+});
+const pswFormatCorrect = computed(() => {
+  return pswFormat.test(pageData.loginForm.password);
+});
+const emptyField = computed(() => {
+  return (
+    !pageData.loginForm.username || !pageData.loginForm.password || !pageData.loginForm.repassword
+  );
 });
 const registerSuccess = () => {
   // router.push({ name: "portal" });
@@ -80,7 +119,7 @@ const registerSuccess = () => {
     })
     .then(() => {
       uni.switchTab({
-        url: "/pages/login/index",
+        url: "/pages/index/index",
       });
     })
     .catch((err) => {
@@ -118,6 +157,76 @@ const handleWechatLogin = () => {
         });
       // message.warn(err.msg || "登录失败");
     });
+};
+const handleRegister = () => {
+  const duration = 1500;
+  debugger;
+  if (
+    emptyField.value ||
+    userNameFormatErrText.value ||
+    showPassWordNotSameErr.value ||
+    pswFormatErrText.value
+  ) {
+    return uni.showToast({
+      icon: "error",
+      title: "注册信息有误！",
+    });
+  }
+  userRegisterApi({
+    username: pageData.loginForm.username,
+    password: pageData.loginForm.password,
+    rePassword: pageData.loginForm.repassword,
+  })
+    .then((res) => {
+      return uni.showToast({
+        icon: "success",
+        title: "注册成功！",
+        duration,
+      });
+    })
+    .then(() => {
+      return new Promise((res) => {
+        setTimeout(res, duration);
+      });
+    })
+    .then(() => {
+      uni.switchTab({
+        url: "/pages/index/index",
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      uni
+        .showToast({
+          icon: "error",
+          title: err.msg || "注册失败",
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      // message.warn(err.msg || "登录失败");
+    });
+};
+const checkPasswordSame = () => {
+  if (pageData.loginForm.password !== pageData.loginForm.repassword) {
+    showPassWordNotSameErr.value = true;
+  } else {
+    showPassWordNotSameErr.value = false;
+  }
+};
+const checkUsernameFormatCorrect = () => {
+  if (!userNameFormatCorrect.value) {
+    userNameFormatErrText.value = "用户名仅能包含字母，数字，下划线，长度不少于6且不大于30！";
+  } else {
+    userNameFormatErrText.value = "";
+  }
+};
+const checkpswFormatCorrect = () => {
+  if (!pswFormatCorrect.value) {
+    pswFormatErrText.value = "密码仅能包含字母，数字，下划线，长度不少于6且不大于30！";
+  } else {
+    pswFormatErrText.value = "";
+  }
 };
 </script>
 <style scoped lang="scss">
