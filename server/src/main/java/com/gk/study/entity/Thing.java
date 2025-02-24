@@ -57,6 +57,6 @@ public class Thing implements Serializable {
     @TableField
     public String userId;
     @TableField
-    public String companyId;
+    public Long companyId;
 
 }
