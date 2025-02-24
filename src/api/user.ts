@@ -72,7 +72,7 @@ const userLoginApi = async (data: ILogin) => {
   });
 };
 const userRegisterApi = async (data: regData) =>
-  post<any>({
+  post<UserEssential>({
     url: URL.userRegister,
     params: {},
     data: data,

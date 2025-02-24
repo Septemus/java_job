@@ -7,7 +7,7 @@ import {
   type regData,
 } from "@/api/user";
 // import { setToken, clearToken } from "/@/utils/auth";
-import { type UserState } from "./types";
+import { type UserEssential, type UserState } from "./types";
 import {
   USER_ID,
   USER_NAME,
@@ -30,22 +30,22 @@ export const useUserStore = defineStore("user", {
   }),
   getters: {},
   actions: {
+    setToken(data: UserEssential) {
+      this.$patch((state) => {
+        state.user_id = data.id;
+        state.user_name = data.username;
+        state.user_token = data.token;
+        console.log("state==>", state);
+      });
+      uni.setStorageSync(USER_TOKEN, data.token);
+      uni.setStorageSync(USER_ID, data.id);
+    },
     //注册
     async register(regForm: regData) {
       const result = await userRegisterApi(regForm);
       console.log("result==>", result);
       if (result.code === 200) {
-        this.$patch((state) => {
-          state.user_id = result.data.id;
-          state.user_name = result.data.username;
-          state.user_token = result.data.token;
-          console.log("state==>", state);
-        });
-        uni.setStorageSync(USER_TOKEN, result.data.token);
-        uni.setStorageSync(USER_ID, result.data.id);
-        // localStorage.setItem(USER_TOKEN, result.data.token);
-        // localStorage.setItem(USER_NAME, result.data.username);
-        // localStorage.setItem(USER_ID, result.data.id);
+        this.setToken(result.data);
       }
 
       return result;
@@ -55,17 +55,7 @@ export const useUserStore = defineStore("user", {
       const result = await wxUserLoginApi(wxLoginForm);
       console.log("result==>", result);
       if (result.code === 200) {
-        this.$patch((state) => {
-          state.user_id = result.data.id;
-          state.user_name = result.data.username;
-          state.user_token = result.data.token;
-          console.log("state==>", state);
-        });
-        uni.setStorageSync(USER_TOKEN, result.data.token);
-        uni.setStorageSync(USER_ID, result.data.id);
-        // localStorage.setItem(USER_TOKEN, result.data.token);
-        // localStorage.setItem(USER_NAME, result.data.username);
-        // localStorage.setItem(USER_ID, result.data.id);
+        this.setToken(result.data);
       }
 
       return result;
@@ -76,17 +66,7 @@ export const useUserStore = defineStore("user", {
       console.log("result==>", result);
 
       if (result.code === 200) {
-        this.$patch((state) => {
-          state.user_id = result.data.id;
-          state.user_name = result.data.username;
-          state.user_token = result.data.token;
-          console.log("state==>", state);
-        });
-        uni.setStorageSync(USER_TOKEN, result.data.token);
-        uni.setStorageSync(USER_ID, result.data.id);
-        // localStorage.setItem(USER_TOKEN, result.data.token);
-        // localStorage.setItem(USER_NAME, result.data.username);
-        // localStorage.setItem(USER_ID, result.data.id);
+        this.setToken(result.data);
       }
 
       return result;
