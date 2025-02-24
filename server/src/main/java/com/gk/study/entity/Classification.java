@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Data
 @TableName("b_classification")
@@ -19,6 +20,6 @@ public class Classification implements Serializable {
     @TableField
     public String title;
     @TableField
-    public String createTime;
+    public Timestamp createTime;
 
 }

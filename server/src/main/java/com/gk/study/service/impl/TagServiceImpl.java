@@ -8,6 +8,7 @@ import com.gk.study.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -23,7 +24,7 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
     @Override
     public void createTag(Tag tag) {
         System.out.println(tag);
-        tag.setCreateTime(String.valueOf(System.currentTimeMillis()));
+        tag.setCreateTime(new Timestamp(System.currentTimeMillis()));
         mapper.insert(tag);
     }
 

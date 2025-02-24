@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.Id;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Data
@@ -30,7 +31,7 @@ public class Thing implements Serializable {
     @TableField
     public String status;
     @TableField
-    public String createTime;
+    public Timestamp createTime;
     @TableField
     public String location;
     @TableField

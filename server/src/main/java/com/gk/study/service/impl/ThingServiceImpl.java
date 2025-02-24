@@ -11,6 +11,7 @@ import com.gk.study.service.ThingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -81,7 +82,7 @@ public class ThingServiceImpl extends ServiceImpl<ThingMapper, Thing> implements
     @Override
     public void createThing(Thing thing) {
         System.out.println(thing);
-        thing.setCreateTime(String.valueOf(System.currentTimeMillis()));
+        thing.setCreateTime(new Timestamp(System.currentTimeMillis()));
 
         if (thing.getPv() == null) {
             thing.setPv("0");

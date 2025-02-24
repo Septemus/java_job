@@ -9,6 +9,7 @@ import lombok.Data;
 
 import javax.persistence.Id;
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 @Data
 @TableName("b_tag")
@@ -20,6 +21,6 @@ public class Tag implements Serializable {
     @TableField
     public String title;
     @TableField
-    public String createTime;
+    public Timestamp createTime;
 
 }
