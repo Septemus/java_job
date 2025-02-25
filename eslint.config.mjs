@@ -39,6 +39,7 @@ export default [
       "**/*.config.mjs",
       "**/*.tsbuildinfo",
       "/src/manifest.json",
+      "/src/static"
     ],
     languageOptions: {
       globals: {
