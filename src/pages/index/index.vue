@@ -17,18 +17,20 @@
     </view>
 
     <view class="joblist">
-      <view v-if="current === 0">
-        <uni-card
-          v-for="job in contentData.thingData"
-          :title="job.title"
-          :extra="job.salary"
-          :subTitle="job.location"
-          :thumbnail="job.cover"
-        >
-          <text class="uni-body">{{ job.companyName }}</text>
-        </uni-card>
-      </view>
-      <view v-else> </view>
+      <uni-card
+        v-for="job in contentData.thingData"
+        v-if="!contentData.loading"
+        :title="job.title"
+        :extra="job.salary"
+        :subTitle="job.location"
+        :thumbnail="job.cover"
+        class="job"
+      >
+        <text class="uni-body">{{ job.companyName }}</text>
+      </uni-card>
+      <view v-else class="loading"
+        ><uni-icons class="spinner" type="spinner-cycle" size="48"></uni-icons
+      ></view>
     </view>
   </view>
 </template>
@@ -36,6 +38,7 @@
 <script setup lang="ts">
 import { listApi as listThingList } from "@/api/thing";
 import { BASE_URL } from "@/store/constants";
+import { IResponse } from "@/utils/http/axios/type";
 const items = reactive(["最新", "推荐"]);
 const current = ref(0);
 onShow(() => {
@@ -65,9 +68,15 @@ const contentData = reactive({
 const getThingList = (data) => {
   contentData.loading = true;
   listThingList(data)
-    .then((res) => {
-      debugger;
-      contentData.loading = false;
+    .then((res): Promise<IResponse<any>> => {
+      return new Promise((resolve, rej) => {
+        setTimeout(() => {
+          contentData.loading = false;
+          resolve(res);
+        }, 1000);
+      });
+    })
+    .then((res: IResponse<any>) => {
       res.data.forEach((item, index) => {
         if (item.cover) {
           item.cover = BASE_URL + "/api/staticfiles/company/" + item.cover;
@@ -92,8 +101,9 @@ page {
   height: 100%;
 }
 .content {
-  background-color: white;
+  height: 100%;
   .show-list-options {
+    background-color: white;
     width: 100%;
     display: flex;
     .left {
@@ -110,6 +120,30 @@ page {
     }
     .right {
       flex-grow: 1;
+    }
+  }
+  .joblist {
+    min-height: 40vh;
+    position: relative;
+    .loading {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .spinner {
+        animation: rotating 2s linear infinite;
+      }
+    }
+
+    @keyframes rotating {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(1turn);
+      }
     }
   }
 }
