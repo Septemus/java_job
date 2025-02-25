@@ -16,18 +16,25 @@
       <view class="right"></view>
     </view>
 
-    <view class="joblist">
-      <uni-card
-        v-for="job in contentData.thingData"
-        v-if="!contentData.loading"
-        :title="job.title"
-        :extra="job.salary"
-        :subTitle="job.location"
-        :thumbnail="job.cover"
-        class="job"
-      >
-        <text class="uni-body">{{ job.companyName }}</text>
-      </uni-card>
+    <view class="joblist-wrapper">
+      <view class="joblist" v-if="!contentData.loading">
+        <uni-transition
+          v-for="job in contentData.thingData"
+          :key="job.id"
+          :show="true"
+          mode-class="slide-left"
+        >
+          <uni-card
+            :title="job.title"
+            :extra="job.salary"
+            :subTitle="job.location"
+            :thumbnail="job.cover"
+            class="job"
+          >
+            <text class="uni-body">{{ job.companyName }}</text>
+          </uni-card>
+        </uni-transition>
+      </view>
       <view v-else class="loading"
         ><uni-icons class="spinner" type="spinner-cycle" size="48"></uni-icons
       ></view>
@@ -122,7 +129,7 @@ page {
       flex-grow: 1;
     }
   }
-  .joblist {
+  .joblist-wrapper {
     min-height: 40vh;
     position: relative;
     .loading {
