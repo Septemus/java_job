@@ -25,6 +25,8 @@
           ></view
         >
       </view>
+    </view>
+    <view class="sticky">
       <view class="filter">
         <view class="major">Java开发</view>
         <view class="search">
@@ -142,45 +144,14 @@ page {
 }
 .content {
   height: 100%;
-  .top {
+  overflow: scroll;
+  .sticky {
     background-color: white;
-    .swiper {
-      margin: 0 auto;
-      height: 330rpx;
-      width: 90%;
-      border-radius: 20px;
-      border: solid 1px transparent;
-      overflow: hidden;
-      .swiper-item {
-        display: block;
-        height: 100%;
-        image {
-          width: 100%;
-          height: 100%;
-        }
-      }
-    }
-    .quick-links {
-      margin: 20rpx auto;
-      display: flex;
-      justify-content: space-around;
-      .link {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        .icon {
-          display: block;
-          width: 50px;
-          height: 50px;
-        }
-        .title {
-          color: #3a3a3a;
-          font-size: 28rpx;
-        }
-      }
-    }
+    position: sticky;
+    top: 0;
+    z-index: 999;
     .filter {
-      padding: 10rpx 40rpx;
+      padding: 20rpx 40rpx;
       display: flex;
       align-items: center;
       .major {
@@ -228,6 +199,45 @@ page {
       }
       .right {
         flex-grow: 1;
+      }
+    }
+  }
+  .top {
+    background-color: white;
+    .swiper {
+      margin: 0 auto;
+      height: 330rpx;
+      width: 90%;
+      border-radius: 20px;
+      border: solid 1px transparent;
+      overflow: hidden;
+      .swiper-item {
+        display: block;
+        height: 100%;
+        image {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+    .quick-links {
+      margin: 20rpx auto;
+      margin-bottom: 0;
+      display: flex;
+      justify-content: space-around;
+      .link {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .icon {
+          display: block;
+          width: 50px;
+          height: 50px;
+        }
+        .title {
+          color: #3a3a3a;
+          font-size: 28rpx;
+        }
       }
     }
   }
