@@ -1,23 +1,50 @@
 <template>
   <view class="content">
-    <view class="show-list-options"
-      ><uni-segmented-control
-        class="left"
-        :current="current"
-        :values="items"
-        :styleType="'text'"
-        activeColor="#1aad19"
-        @clickItem="
-          (e) => {
-            current = e.currentIndex;
-          }
-        "
-      ></uni-segmented-control>
-      <view class="right"></view>
+    <view class="top">
+      <swiper class="swiper" circular :indicator-dots="true" :autoplay="true">
+        <swiper-item v-for="i in swiperItems">
+          <view class="swiper-item"
+            ><img :src="BASE_URL + '/api/staticfiles/image/' + i" alt="" srcset=""
+          /></view>
+        </swiper-item>
+      </swiper>
+      <view class="quick-links">
+        <view class="link"
+          ><img class="icon" src="/static/images/wap_icon_qzzx.png" /><text class="title">
+            春招早鸟</text
+          ></view
+        >
+        <view class="link"
+          ><img class="icon" src="/static/images/wap_icon_mqnt.png" /><text class="title">
+            金融实习</text
+          ></view
+        >
+        <view class="link"
+          ><img class="icon" src="/static/images/wap_icon_hdzx.png" /><text class="title">
+            大一大二</text
+          ></view
+        >
+      </view>
+
+      <view class="show-list-options"
+        ><uni-segmented-control
+          class="left"
+          :current="current"
+          :values="items"
+          :styleType="'text'"
+          activeColor="#1aad19"
+          @clickItem="
+            (e) => {
+              current = e.currentIndex;
+            }
+          "
+        ></uni-segmented-control>
+        <view class="right"></view>
+      </view>
     </view>
 
     <view class="joblist-wrapper">
-      <view class="joblist" v-if="!contentData.loading">
+      <view v-if="!contentData.loading" class="joblist">
         <uni-transition
           v-for="job in contentData.thingData"
           :key="job.id"
@@ -54,6 +81,7 @@ onShow(() => {
 onMounted(() => {
   getThingList({});
 });
+const swiperItems = reactive(["swiperitem1.png", "swiperitem2.png", "swiperitem3.png"]);
 const contentData = reactive({
   selectX: 0,
   selectTagId: -1,
@@ -109,26 +137,64 @@ page {
 }
 .content {
   height: 100%;
-  .show-list-options {
+  .top {
     background-color: white;
-    width: 100%;
-    display: flex;
-    .left {
-      width: 40%;
-      flex-grow: 0;
-      flex-shrink: 0;
-      .segmented-control {
-        height: auto !important;
-        .segmented-control__text {
-          font-size: 4.25vw !important;
-          line-height: 3 !important;
+    .swiper {
+      margin: 0 auto;
+      height: 330rpx;
+      width: 90%;
+      border-radius: 20px;
+      border: solid 1px transparent;
+      overflow: hidden;
+      .swiper-item {
+        display: block;
+        height: 100%;
+        image {
+          width: 100%;
+          height: 100%;
         }
       }
     }
-    .right {
-      flex-grow: 1;
+    .quick-links {
+      margin: 20rpx auto;
+      display: flex;
+      justify-content: space-around;
+      .link {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .icon {
+          display: block;
+          width: 50px;
+          height: 50px;
+        }
+        .title {
+          color: #3a3a3a;
+          font-size: 28rpx;
+        }
+      }
+    }
+    .show-list-options {
+      width: 100%;
+      display: flex;
+      .left {
+        width: 40%;
+        flex-grow: 0;
+        flex-shrink: 0;
+        .segmented-control {
+          height: auto !important;
+          .segmented-control__text {
+            font-size: 4.25vw !important;
+            line-height: 3 !important;
+          }
+        }
+      }
+      .right {
+        flex-grow: 1;
+      }
     }
   }
+
   .joblist-wrapper {
     min-height: 40vh;
     position: relative;
