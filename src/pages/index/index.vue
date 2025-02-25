@@ -25,7 +25,12 @@
           ></view
         >
       </view>
-
+      <view class="filter">
+        <view class="major">Java开发</view>
+        <view class="search">
+          <input confirm-type="search" placeholder="🔎︎ 搜索职位/公司" />
+        </view>
+      </view>
       <view class="show-list-options"
         ><uni-segmented-control
           class="left"
@@ -174,6 +179,36 @@ page {
         }
       }
     }
+    .filter {
+      padding: 10rpx 40rpx;
+      display: flex;
+      align-items: center;
+      .major {
+        font-weight: bold;
+        font-size: 35rpx;
+        color: black;
+        &::after {
+          color: #909399;
+          font-weight: normal;
+          padding-left: 15rpx;
+          content: ">";
+        }
+      }
+      .search {
+        padding-left: 25rpx;
+        flex-grow: 1;
+        input {
+          display: block;
+          padding: 20rpx;
+          padding-right: 0;
+          height: 75rpx;
+          // margin-right: 25rpx;
+          width: 100%;
+          background-color: rgba(0, 0, 0, 0.03);
+          border-radius: 30rpx;
+        }
+      }
+    }
     .show-list-options {
       width: 100%;
       display: flex;
@@ -183,9 +218,11 @@ page {
         flex-shrink: 0;
         .segmented-control {
           height: auto !important;
-          .segmented-control__text {
-            font-size: 4.25vw !important;
-            line-height: 3 !important;
+          .segmented-control__item {
+            .segmented-control__text {
+              font-size: 4.25vw !important;
+              line-height: 3 !important;
+            }
           }
         }
       }
