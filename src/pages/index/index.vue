@@ -2,7 +2,7 @@
   <view class="content">
     <view class="top">
       <swiper class="swiper" circular :indicator-dots="true" :autoplay="true">
-        <swiper-item v-for="i in swiperItems">
+        <swiper-item v-for="i in swiperItems" :key="i">
           <view class="swiper-item"
             ><img :src="BASE_URL + '/api/staticfiles/image/' + i" alt="" srcset=""
           /></view>
@@ -53,7 +53,7 @@
     <view class="joblist-wrapper">
       <view v-if="!contentData.loading" class="joblist">
         <uni-transition
-          v-for="job in contentData.thingData"
+          v-for="(job, index) in contentData.thingData"
           :key="job.id"
           :show="true"
           mode-class="slide-left"
@@ -61,7 +61,7 @@
           <uni-card
             :title="job.title"
             :extra="job.salary"
-            :subTitle="job.location"
+            :subTitle="`${job.location} | ${job.tagStr}`"
             :thumbnail="job.cover"
             class="job"
           >
@@ -126,6 +126,9 @@ const getThingList = (data) => {
       });
       console.log(res);
       contentData.thingData = res.data;
+      contentData.thingData.forEach((job) => {
+        job.tagStr = job.tags.join(" ");
+      });
       contentData.total = contentData.thingData.length;
       // changePage(1);
     })
