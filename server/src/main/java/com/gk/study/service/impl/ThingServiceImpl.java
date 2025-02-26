@@ -9,6 +9,7 @@ import com.gk.study.entity.ThingTag;
 import com.gk.study.mapper.ThingMapper;
 import com.gk.study.mapper.ThingTagMapper;
 import com.gk.study.service.CompanyService;
+import com.gk.study.service.TagService;
 import com.gk.study.service.ThingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,9 @@ public class ThingServiceImpl extends ServiceImpl<ThingMapper, Thing> implements
 
     @Autowired
     ThingTagMapper thingTagMapper;
+
+    @Autowired
+    TagService tagService;
 
     @Override
     public List<Thing> getThingList(String keyword, String sort, String c, String tag) {
@@ -84,7 +88,10 @@ public class ThingServiceImpl extends ServiceImpl<ThingMapper, Thing> implements
             QueryWrapper<ThingTag> thingTagQueryWrapper = new QueryWrapper<>();
             thingTagQueryWrapper.lambda().eq(ThingTag::getThingId, thing.getId());
             List<ThingTag> thingTags = thingTagMapper.selectList(thingTagQueryWrapper);
-            List<Long> tags = thingTags.stream().map(ThingTag::getTagId).collect(Collectors.toList());
+            List<String> tags = thingTags.stream().map((thingTag)->{
+                long tagId=thingTag.getTagId();
+                return tagService.getTag(tagId).getTitle();
+            }).collect(Collectors.toList());
             thing.setTags(tags);
         }
         return things;
@@ -160,7 +167,7 @@ public class ThingServiceImpl extends ServiceImpl<ThingMapper, Thing> implements
         thingTagMapper.deleteByMap(map);
         // 新增tag
         if (thing.getTags() != null) {
-            for (Long tag : thing.getTags()) {
+            for (Long tag : thing.getTagids()) {
                 ThingTag thingTag = new ThingTag();
                 thingTag.setThingId(thing.getId());
                 thingTag.setTagId(tag);

@@ -37,4 +37,9 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
     public void updateTag(Tag tag) {
         mapper.updateById(tag);
     }
+
+    @Override
+    public Tag getTag(long id) {
+        return mapper.selectById(id);
+    }
 }

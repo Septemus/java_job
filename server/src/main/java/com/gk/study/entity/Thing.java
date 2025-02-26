@@ -50,7 +50,10 @@ public class Thing implements Serializable {
     public Long classificationId;
 
     @TableField(exist = false)
-    public List<Long> tags; // 标签
+    public List<String> tags; // 标签
+
+    @TableField(exist = false)
+    public List<Long> tagids; // 标签
 
 //    @TableField(exist = false)
 //    public MultipartFile imageFile;

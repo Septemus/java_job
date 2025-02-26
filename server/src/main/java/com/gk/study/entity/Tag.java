@@ -22,5 +22,6 @@ public class Tag implements Serializable {
     public String title;
     @TableField
     public Timestamp createTime;
-
+    @TableField
+    public Long classificationId;
 }
