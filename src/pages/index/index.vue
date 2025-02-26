@@ -66,6 +66,7 @@
             class="job"
           >
             <text class="uni-body">{{ job.companyName }}</text>
+            <text class="work-exp">{{ job.workExpe }}</text>
           </uni-card>
         </uni-transition>
       </view>
@@ -249,6 +250,14 @@ page {
   .joblist-wrapper {
     min-height: 40vh;
     position: relative;
+    .joblist {
+      .job {
+        .work-exp {
+          position: absolute;
+          right: 1.5em;
+        }
+      }
+    }
     .loading {
       position: absolute;
       width: 100%;
