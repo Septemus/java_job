@@ -31,8 +31,8 @@ public class ThingController {
     @Autowired
     ThingService service;
 
-    @Value("${File.uploadPath}")
-    private String uploadPath;
+//    @Value("${File.uploadPath}")
+//    private String uploadPath;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public APIResponse list(String keyword, String sort, String c, String tag){
@@ -42,7 +42,7 @@ public class ThingController {
     }
 
     @RequestMapping(value = "/detail", method = RequestMethod.GET)
-    public APIResponse detail(String id){
+    public APIResponse detail(long id){
         Thing thing =  service.getThingById(id);
 
         return new APIResponse(ResponeCode.SUCCESS, "查询成功", thing);
@@ -52,10 +52,10 @@ public class ThingController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @Transactional
     public APIResponse create(Thing thing) throws IOException {
-        String url = saveThing(thing);
-        if(!StringUtils.isEmpty(url)) {
-            thing.cover = url;
-        }
+//        String url = saveThing(thing);
+//        if(!StringUtils.isEmpty(url)) {
+//            thing.cover = url;
+//        }
 
         service.createThing(thing);
         return new APIResponse(ResponeCode.SUCCESS, "创建成功");
@@ -78,36 +78,36 @@ public class ThingController {
     @Transactional
     public APIResponse update(Thing thing) throws IOException {
         System.out.println(thing);
-        String url = saveThing(thing);
-        if(!StringUtils.isEmpty(url)) {
-            thing.cover = url;
-        }
+//        String url = saveThing(thing);
+//        if(!StringUtils.isEmpty(url)) {
+//            thing.cover = url;
+//        }
 
         service.updateThing(thing);
         return new APIResponse(ResponeCode.SUCCESS, "更新成功");
     }
 
-    public String saveThing(Thing thing) throws IOException {
-        MultipartFile file = thing.getImageFile();
-        String newFileName = null;
-        if(file !=null && !file.isEmpty()) {
-
-            // 存文件
-            String oldFileName = file.getOriginalFilename();
-            String randomStr = UUID.randomUUID().toString();
-            newFileName = randomStr + oldFileName.substring(oldFileName.lastIndexOf("."));
-            String filePath = uploadPath + File.separator + "image" + File.separator + newFileName;
-            File destFile = new File(filePath);
-            if(!destFile.getParentFile().exists()){
-                destFile.getParentFile().mkdirs();
-            }
-            file.transferTo(destFile);
-        }
-        if(!StringUtils.isEmpty(newFileName)) {
-            thing.cover = newFileName;
-        }
-        return newFileName;
-    }
+//    public String saveThing(Thing thing) throws IOException {
+//        MultipartFile file = thing.getImageFile();
+//        String newFileName = null;
+//        if(file !=null && !file.isEmpty()) {
+//
+//            // 存文件
+//            String oldFileName = file.getOriginalFilename();
+//            String randomStr = UUID.randomUUID().toString();
+//            newFileName = randomStr + oldFileName.substring(oldFileName.lastIndexOf("."));
+//            String filePath = uploadPath + File.separator + "image" + File.separator + newFileName;
+//            File destFile = new File(filePath);
+//            if(!destFile.getParentFile().exists()){
+//                destFile.getParentFile().mkdirs();
+//            }
+//            file.transferTo(destFile);
+//        }
+//        if(!StringUtils.isEmpty(newFileName)) {
+//            thing.cover = newFileName;
+//        }
+//        return newFileName;
+//    }
 
 
     @RequestMapping(value = "/listUserThingApi", method = RequestMethod.GET)

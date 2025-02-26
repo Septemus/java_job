@@ -3,10 +3,12 @@ package com.gk.study.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.gk.study.entity.Company;
 import com.gk.study.entity.Thing;
 import com.gk.study.entity.ThingTag;
 import com.gk.study.mapper.ThingMapper;
 import com.gk.study.mapper.ThingTagMapper;
+import com.gk.study.service.CompanyService;
 import com.gk.study.service.ThingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,9 @@ import java.util.stream.Collectors;
 public class ThingServiceImpl extends ServiceImpl<ThingMapper, Thing> implements ThingService {
     @Autowired
     ThingMapper mapper;
+
+    @Autowired
+    CompanyService companyService;
 
     @Autowired
     ThingTagMapper thingTagMapper;
@@ -50,6 +55,12 @@ public class ThingServiceImpl extends ServiceImpl<ThingMapper, Thing> implements
         }
 
         List<Thing> things = mapper.selectList(queryWrapper);
+
+        things.forEach(thing -> {
+             Company tmp=companyService.getCompanyById(thing.companyId);
+             thing.setCover(tmp.getCover());
+             thing.setCompanyName(tmp.getTitle());
+        });
 
         // tag筛选
         if (StringUtils.isNotBlank(tag)) {
@@ -84,13 +95,13 @@ public class ThingServiceImpl extends ServiceImpl<ThingMapper, Thing> implements
         System.out.println(thing);
         thing.setCreateTime(new Timestamp(System.currentTimeMillis()));
 
-        if (thing.getPv() == null) {
-            thing.setPv("0");
-        }
+//        if (thing.getPv() == null) {
+//            thing.setPv("0");
+//        }
 
-        if (thing.getWishCount() == null) {
-            thing.setWishCount("0");
-        }
+//        if (thing.getWishCount() == null) {
+//            thing.setWishCount("0");
+//        }
         mapper.insert(thing);
         // 更新tag
         setThingTags(thing);
@@ -98,7 +109,8 @@ public class ThingServiceImpl extends ServiceImpl<ThingMapper, Thing> implements
 
     @Override
     public void deleteThing(String id) {
-        mapper.deleteById(id);
+        long realId=Long.parseLong(id);
+        mapper.deleteById(realId);
     }
 
     @Override
@@ -111,15 +123,18 @@ public class ThingServiceImpl extends ServiceImpl<ThingMapper, Thing> implements
     }
 
     @Override
-    public Thing getThingById(String id) {
-        return mapper.selectById(id);
+    public Thing getThingById(long id) {
+        Thing ret = mapper.selectById(id);
+        Company tmp=companyService.getCompanyById(ret.companyId);
+        ret.setCover(tmp.getCover());
+        return ret;
     }
 
     // 心愿数加1
     @Override
     public void addWishCount(String thingId) {
         Thing thing = mapper.selectById(thingId);
-        thing.setWishCount(String.valueOf(Integer.parseInt(thing.getWishCount()) + 1));
+        thing.setWishCount(thing.getWishCount() + 1);
         mapper.updateById(thing);
     }
 
@@ -127,7 +142,7 @@ public class ThingServiceImpl extends ServiceImpl<ThingMapper, Thing> implements
     @Override
     public void addCollectCount(String thingId) {
         Thing thing = mapper.selectById(thingId);
-        thing.setCollectCount(String.valueOf(Integer.parseInt(thing.getCollectCount()) + 1));
+        thing.setCollectCount(thing.getCollectCount() + 1);
         mapper.updateById(thing);
     }
 

@@ -22,14 +22,14 @@ public class Thing implements Serializable {
     public Long id;
     @TableField
     public String title;
-    @TableField
+    @TableField(exist = false)
     public String cover;
     @TableField
     public String description;
     @TableField
     public String education;
-    @TableField
-    public String status;
+//    @TableField
+//    public String status;
     @TableField
     public Timestamp createTime;
     @TableField
@@ -38,26 +38,28 @@ public class Thing implements Serializable {
     public String salary;
     @TableField
     public String workExpe;
+//    @TableField
+//    public String pv;
     @TableField
-    public String pv;
+    public int recommendCount=0;
     @TableField
-    public String recommendCount;
+    public int wishCount=0;
     @TableField
-    public String wishCount;
-    @TableField
-    public String collectCount;
+    public int collectCount=0;
     @TableField
     public Long classificationId;
 
     @TableField(exist = false)
     public List<Long> tags; // 标签
 
-    @TableField(exist = false)
-    public MultipartFile imageFile;
+//    @TableField(exist = false)
+//    public MultipartFile imageFile;
 
     @TableField
     public String userId;
     @TableField
     public Long companyId;
+    @TableField(exist = false)
+    public String companyName;
 
 }

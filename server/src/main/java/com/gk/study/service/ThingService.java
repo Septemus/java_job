@@ -12,7 +12,7 @@ public interface ThingService {
 
     void updateThing(Thing thing);
 
-    Thing getThingById(String id);
+    Thing getThingById(long id);
 
     void addWishCount(String thingId);
 
