@@ -9,6 +9,19 @@ enum URL {
   detail = "/api/thing/detail",
   listUserThing = "/api/thing/listUserThingApi",
 }
+interface Job {
+  id: number;
+  companyName: string;
+  cover: string;
+  createTime: string;
+  education: string;
+  location: string;
+  salary: string;
+  tags: string[];
+  title: string;
+  workExpe: string;
+  tagStr?: string;
+}
 const listApi = async (params: any) =>
-  get<any>({ url: URL.list, params: params, data: {}, headers: {} });
-export { listApi };
+  get<Job[]>({ url: URL.list, params: params, data: {}, headers: {} });
+export { listApi, type Job };

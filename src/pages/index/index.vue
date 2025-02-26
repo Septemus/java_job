@@ -53,7 +53,7 @@
     <view class="joblist-wrapper">
       <view v-if="!contentData.loading" class="joblist">
         <uni-transition
-          v-for="(job, index) in contentData.thingData"
+          v-for="(job, index) in thingData.arr"
           :key="job.id"
           :show="true"
           mode-class="slide-left"
@@ -77,7 +77,7 @@
 </template>
 
 <script setup lang="ts">
-import { listApi as listThingList } from "@/api/thing";
+import { listApi as listThingList, type Job } from "@/api/thing";
 import { BASE_URL } from "@/store/constants";
 import { IResponse } from "@/utils/http/axios/type";
 const items = reactive(["最新", "推荐"]);
@@ -107,10 +107,11 @@ const contentData = reactive({
   total: 0,
   pageSize: 12,
 });
-const getThingList = (data) => {
+const thingData: { arr: Job[]; total: number } = reactive({ arr: [], total: 0 });
+const getThingList = (data: { sort?: string }) => {
   contentData.loading = true;
   listThingList(data)
-    .then((res): Promise<IResponse<any>> => {
+    .then((res): Promise<IResponse<Job[]>> => {
       return new Promise((resolve, rej) => {
         setTimeout(() => {
           contentData.loading = false;
@@ -118,18 +119,18 @@ const getThingList = (data) => {
         }, 1000);
       });
     })
-    .then((res: IResponse<any>) => {
+    .then((res: IResponse<Job[]>) => {
       res.data.forEach((item, index) => {
         if (item.cover) {
           item.cover = BASE_URL + "/api/staticfiles/company/" + item.cover;
         }
       });
       console.log(res);
-      contentData.thingData = res.data;
-      contentData.thingData.forEach((job) => {
+      thingData.arr = res.data;
+      thingData.arr.forEach((job) => {
         job.tagStr = job.tags.join(" ");
       });
-      contentData.total = contentData.thingData.length;
+      thingData.total = thingData.arr.length;
       // changePage(1);
     })
     .catch((err) => {
