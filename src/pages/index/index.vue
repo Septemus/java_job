@@ -30,7 +30,8 @@
       <view class="filter">
         <view class="major">Java开发</view>
         <view class="search">
-          <input confirm-type="search" placeholder="🔎︎ 搜索职位/公司" />
+          <uni-icons type="search" class="magnifier"></uni-icons>
+          <input confirm-type="search" placeholder="搜索职位/公司" />
         </view>
       </view>
       <view class="show-list-options"
@@ -173,13 +174,21 @@ page {
       .search {
         padding-left: 25rpx;
         flex-grow: 1;
+        position: relative;
+        .magnifier {
+          position: absolute;
+          top: 50%;
+          left: 1.5em;
+          transform: translateY(-50%);
+        }
         input {
           display: block;
           padding: 20rpx;
+          padding-left: 2em;
           padding-right: 0;
           height: 75rpx;
           // margin-right: 25rpx;
-          width: 100%;
+          // width: 100%;
           background-color: rgba(0, 0, 0, 0.03);
           border-radius: 30rpx;
         }
