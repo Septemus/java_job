@@ -252,6 +252,9 @@ page {
     position: relative;
     .joblist {
       .job {
+        .uni-card__header-content-title {
+          max-width: 150px;
+        }
         .work-exp {
           position: absolute;
           right: 1.5em;
