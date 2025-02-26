@@ -233,7 +233,7 @@ view {
           .input {
             font-weight: 500;
             font-size: 14px;
-            color: #1e1e1e;
+            color: $uni-text-color;
             height: 40px;
             line-height: 40px;
             border: none;
@@ -248,7 +248,7 @@ view {
             height: 16px;
             line-height: 16px;
             font-size: 12px;
-            color: #f62a2a;
+            color: $uni-color-error;
           }
         }
       }
@@ -274,7 +274,7 @@ view {
         overflow: hidden;
         flex: 1;
         margin: 0 auto;
-        color: #3d5b96;
+        color: $uni-color-link;
         font-size: 14px;
         cursor: pointer;
       }
@@ -297,10 +297,10 @@ view {
       margin-top: 40px;
       font-size: 13px;
       text-align: center;
-      color: rgba(51, 51, 51, 0.6);
+      color: $uni-text-color-placeholder;
       navigator {
         display: inline;
-        color: #13386c;
+        color: $uni-color-link;
       }
     }
   }
@@ -352,7 +352,7 @@ view {
 //     display: inline-block;
 //     width: 0;
 //     height: 2px;
-//     background: #3d5b96;
+//     background: $uni-color-link;
 //     -webkit-transition: width 0.5s cubic-bezier(0.46, 1, 0.23, 1.52);
 //     transition: width 0.5s cubic-bezier(0.46, 1, 0.23, 1.52);
 //   }

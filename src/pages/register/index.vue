@@ -253,10 +253,10 @@ view {
       margin-top: 40px;
       font-size: 13px;
       text-align: center;
-      color: rgba(51, 51, 51, 0.6);
+      color: $uni-text-color;
       navigator {
         display: inline;
-        color: #13386c;
+        color: $uni-color-link;
       }
     }
   }
@@ -350,7 +350,7 @@ view {
     .input {
       font-weight: 500;
       font-size: 14px;
-      color: #1e1e1e;
+      color: $uni-text-color;
       height: 40px;
       line-height: 40px;
       border: none;
@@ -365,7 +365,7 @@ view {
       height: 16px;
       line-height: 16px;
       font-size: 12px;
-      color: #f62a2a;
+      color: $uni-color-error;
     }
   }
 }
@@ -399,7 +399,7 @@ textarea {
   width: 100%;
   display: block;
   text-align: center;
-  color: #3d5b96;
+  color: $uni-color-link;
   margin-top: 20px;
   font-size: 13px;
 }

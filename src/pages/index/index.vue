@@ -143,8 +143,9 @@ const getThingList = (data: { sort?: string }) => {
 </script>
 
 <style lang="scss">
+@import "/src/uni.scss";
 page {
-  background-color: #fafafa;
+  background-color: $uni-bg-color-grey;
   width: 100%;
   height: 100%;
 }
@@ -152,7 +153,7 @@ page {
   height: 100%;
   overflow: scroll;
   .sticky {
-    background-color: white;
+    background-color: $uni-bg-color;
     position: sticky;
     top: 0;
     z-index: 999;
@@ -163,9 +164,9 @@ page {
       .major {
         font-weight: bold;
         font-size: 35rpx;
-        color: black;
+        color: $uni-text-color;
         &::after {
-          color: #909399;
+          color: $uni-text-color-grey;
           font-weight: normal;
           padding-left: 15rpx;
           content: ">";
@@ -189,7 +190,8 @@ page {
           height: 75rpx;
           // margin-right: 25rpx;
           // width: 100%;
-          background-color: rgba(0, 0, 0, 0.03);
+          // background-color: rgba(0, 0, 0, 0.03);
+          background-color: $uni-bg-color-grey;
           border-radius: 30rpx;
         }
       }
@@ -217,7 +219,7 @@ page {
     }
   }
   .top {
-    background-color: white;
+    background-color: $uni-bg-color;
     .swiper {
       margin: 0 auto;
       height: 330rpx;
@@ -249,7 +251,7 @@ page {
           height: 50px;
         }
         .title {
-          color: #3a3a3a;
+          color: $uni-text-color;
           font-size: 28rpx;
         }
       }
@@ -262,7 +264,7 @@ page {
     .joblist {
       .job {
         .uni-card__header-extra-text {
-          color: #1aad19;
+          color: $uni-color-success;
         }
         .uni-card__header-content-title {
           max-width: 150px;
