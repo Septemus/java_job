@@ -107,7 +107,7 @@
       </view>
     </scroll-view>
     <view class="submit">
-      <button type="primary">确定</button>
+      <button type="primary" @tap="submit">确定</button>
     </view>
   </view>
 </template>
@@ -252,10 +252,10 @@ export default defineComponent({
         }
       }, 1000);
     },
-    handelCityClickFn(val: string) {
+    submit() {
       if (this.prevpage && Object.keys(this.prevpage).length > 0) {
         uni.navigateTo({
-          url: "/" + this.prevpage.route + "?item=" + JSON.stringify(val),
+          url: "/" + this.prevpage.route + "?cities=" + JSON.stringify(this.chosen),
         });
       }
     },
