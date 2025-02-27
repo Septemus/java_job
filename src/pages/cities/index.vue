@@ -247,6 +247,8 @@ export default defineComponent({
           debugger;
           const newData = that.allCityList.filter((item) => item.includes(e.toString()));
           that.searchList = newData.length > 0 ? newData : [];
+        } else {
+          that.searchList = [];
         }
       }, 1000);
     },
