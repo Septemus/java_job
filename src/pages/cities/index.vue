@@ -21,6 +21,12 @@
               :text="v"
               type="success"
               :inverted="true"
+              @tap="
+                () => {
+                  const pos = chosen.findIndex((val) => val === v);
+                  chosen.splice(pos, 1);
+                }
+              "
             ></uni-tag>
           </view>
         </view>
@@ -29,9 +35,10 @@
           <uni-list-item
             v-for="(item, index) in searchList"
             :key="index"
+            :class="[chosen.includes(item) ? 'checkedBtn' : '']"
             :title="item"
             clickable
-            @click="handelCityClickFn(item)"
+            @click="checkCity(item)"
           />
         </uni-list>
         <view v-if="!searchList.length" class="citysHot">
@@ -43,7 +50,7 @@
             <label
               v-for="(v, i) in hotCitys"
               :key="i"
-              :class="[city_done === v ? 'checkedBtn' : '']"
+              :class="[chosen.includes(v) ? 'checkedBtn' : '']"
               @click="checkCity(v)"
               >{{ v }}</label
             >
@@ -67,7 +74,7 @@
                   v-for="(q, w) in v.cities"
                   :key="q"
                   class="listIndexText"
-                  :class="[q === city_done ? 'checkedBtn' : '']"
+                  :class="[chosen.includes(q) ? 'checkedBtn' : '']"
                   @click="checkCity(q)"
                 >
                   <label>{{ q }}</label>
@@ -108,7 +115,7 @@
 <script lang="ts">
 import type { TouchEvent } from "@uni-helper/uni-app-types";
 import citys from "./city";
-export default {
+export default defineComponent({
   props: {},
   data() {
     return {
@@ -157,16 +164,16 @@ export default {
       citys: citys,
       city_done: "",
       searchValue: "",
-      searchList: [],
+      searchList: [] as string[],
       indexList: [],
       cityData: {},
       update: true,
       scrollTop: "",
-      prevpage: null,
-      timerOut: null,
-      arrTouchBarPosition: null,
+      prevpage: null as Page.PageInstance<AnyObject, {}> | null,
+      timerOut: null as number | null,
+      arrTouchBarPosition: [] as UniApp.NodeInfo[] | UniApp.NodeInfo,
       letter_item: "",
-      chosen: ["北京"],
+      chosen: [] as string[],
     };
   },
   computed: {
@@ -214,8 +221,23 @@ export default {
       this.scrollTop = "city_" + v;
     },
     checkCity(city: string) {
-      this.city_done = city;
-      this.handelCityClickFn(city);
+      if (this.chosen.includes(city)) {
+        this.chosen.splice(
+          this.chosen.findIndex((val) => val === city),
+          1,
+        );
+        return;
+      }
+      if (this.chosen.length < 3) {
+        this.chosen.push(city);
+      } else {
+        uni.showToast({
+          title: "最多选择3个城市",
+          icon: "none",
+        });
+      }
+      // this.city_done = city;
+      // this.handelCityClickFn(city);
     },
     search(e: string | number) {
       const that = this;
@@ -228,8 +250,8 @@ export default {
         }
       }, 1000);
     },
-    handelCityClickFn(val) {
-      if (Object.keys(this.prevpage).length > 0) {
+    handelCityClickFn(val: string) {
+      if (this.prevpage && Object.keys(this.prevpage).length > 0) {
         uni.navigateTo({
           url: "/" + this.prevpage.route + "?item=" + JSON.stringify(val),
         });
@@ -247,7 +269,7 @@ export default {
       });
     },
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>
@@ -319,6 +341,7 @@ export default {
         flex-wrap: wrap;
         align-items: center;
         :deep(.city-label) {
+          position: relative;
           @include single-city();
           .uni-tag {
             width: 100%;
@@ -329,6 +352,24 @@ export default {
             align-items: center;
             justify-content: center;
             // vertical-align: middle;
+          }
+          &::after {
+            // vertical-align: middle;
+            content: "x";
+            background-color: $uni-color-success;
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 40%;
+            width: 20%;
+            padding-top: 5%;
+            box-sizing: border-box;
+            // display: table-cell;
+            // line-height: 1;
+            // text-align: center;
+            line-height: 0;
+            color: $uni-text-color-inverse;
+            border-bottom-left-radius: 25%;
           }
         }
       }
