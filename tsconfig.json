@@ -18,7 +18,8 @@
       "@uni-helper/uni-ui-types"
     ],
     "skipLibCheck": true,
-    "strict": true
+    "strict": true,
+    "moduleResolution": "Bundler",
   },
   "vueCompilerOptions": {
     "plugins": [

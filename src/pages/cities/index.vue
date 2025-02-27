@@ -1,5 +1,5 @@
 <template>
-  <view class="citysIndex" v-if="update">
+  <view v-if="update" class="citysIndex">
     <scroll-view :scroll-into-view="scrollTop" :scroll-y="true" style="height: 100%">
       <view class="citysHead">
         <uni-search-bar
@@ -65,9 +65,24 @@
               </view>
             </template>
             <!-- 右边字母坐标 -->
-            <view class="index-sidebar">
+            <view
+              class="index-sidebar"
+              :hover-stop-propagation="true"
+              @touchstart="touchSideBar"
+              @touchmove.stop.prevent="touchSideBar"
+              @touchend="
+                () => {
+                  letter_item = '';
+                }
+              "
+            >
               <template v-for="(v, i) in alphabet">
-                <view class="index-bar" @click="findCity(v)">{{ v }}</view>
+                <view
+                  :id="v"
+                  class="index-bar"
+                  :class="[v === letter_item ? 'index-bar-hover' : '']"
+                  >{{ v }}</view
+                >
               </template>
             </view>
           </view>
@@ -81,6 +96,7 @@
 </template>
 
 <script lang="ts">
+import type { TouchEvent } from "@uni-helper/uni-app-types";
 import citys from "./city";
 export default {
   props: {},
@@ -138,6 +154,8 @@ export default {
       scrollTop: "",
       prevpage: null,
       timerOut: null,
+      arrTouchBarPosition: null,
+      letter_item: "",
     };
   },
   computed: {
@@ -157,8 +175,31 @@ export default {
     // let currentPage = page[page.length - 1]; // 当前页面对象
     this.prevpage = page[page.length - 2]; //上一个页面对象
   },
+  mounted() {
+    const query = uni.createSelectorQuery().in(this);
+    query
+      .selectAll(".citysIndex .index-sidebar .index-bar")
+      .boundingClientRect((data) => {
+        this.arrTouchBarPosition = data;
+      })
+      .exec();
+  },
   methods: {
-    findCity(v: string) {
+    touchSideBar(e: TouchEvent) {
+      let clientY = e.touches[0].clientY;
+      for (let item of this.arrTouchBarPosition as UniApp.NodeInfo[]) {
+        if (clientY! >= item.top! && clientY! <= item.bottom!) {
+          if (this.letter_item !== item.id) {
+            this.letter_item = item.id!;
+            this.findCity(this.letter_item);
+          }
+          //根据自己定义的筛选方法在这里执行一下就可以了
+          //顺便说一下，在循环中不能使用break进行结束，需要使用continue
+          break;
+        }
+      }
+    },
+    findCity(v: string | undefined) {
       console.log(v);
       this.scrollTop = "city_" + v;
     },
@@ -207,15 +248,18 @@ export default {
   .submit {
     position: fixed;
     bottom: 0;
-    height: 11vh;
+    height: 10vh;
     width: 100%;
-    padding: 30rpx;
+    padding: 12px 24px;
+    // padding-bottom: 24rpx;
     box-sizing: border-box;
     z-index: 999;
     background-color: $uni-bg-color;
     button {
       // width: 100%;
-      border-radius: 45rpx;
+      // height: 100%;
+      border-radius: 36rpx;
+      line-height: 2.5;
     }
   }
 }
@@ -288,10 +332,13 @@ export default {
 }
 
 .index-sidebar {
+  background-color: $uni-bg-color;
+  padding: 0 20rpx;
   display: flex;
   flex-direction: column;
+  align-items: center;
   position: fixed;
-  right: 36rpx;
+  right: 0;
   text-align: center;
   top: 50%;
   transform: translateY(-50%);
@@ -300,20 +347,23 @@ export default {
 }
 
 .index-bar {
-  font-size: 14px;
+  font-size: $uni-font-size-sm;
   color: #333;
-  margin-bottom: 2px;
+  margin-bottom: 1px;
   width: 20px;
-  height: 20px;
+  height: 18px;
   border-radius: 50%;
-  line-height: 19px;
+  line-height: 18px;
   text-align: center;
 }
 
-.index-bar:active {
+.index-bar-hover {
   background-color: $uni-color-success;
   color: white;
   font-size: 14px;
+  width: 36px;
+  height: 36px;
+  line-height: 36px;
 }
 
 .listIndexTitle {
