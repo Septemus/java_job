@@ -33,6 +33,20 @@
 			},
 			"needLogin": true
 		},
+		{
+			"path": "pages/preference/index",
+			"style": {
+				"navigationBarTitleText": ""
+			},
+			"needLogin": true
+		},
+		{
+			"path": "pages/cities/index",
+			"style": {
+				"navigationBarTitleText": "期望城市"
+			},
+			"needLogin": true
+		}
 	],
 	"tabBar": {
 		"color": "#474747",
@@ -66,9 +80,9 @@
 		"backgroundColor": "#FFFFFF"
 	},
 	"easycom": {
-    "autoscan": true,
-    "custom": {
-        "^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue"
-    }
-}
+		"autoscan": true,
+		"custom": {
+			"^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue"
+		}
+	}
 }
