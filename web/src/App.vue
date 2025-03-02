@@ -4,15 +4,12 @@
   </a-config-provider>
 </template>
 <script setup lang="ts">
-
-import zhCN from 'ant-design-vue/es/locale/zh_CN';
-
+  import zhCN from 'ant-design-vue/es/locale/zh_CN';
 </script>
 
 <style>
-
   #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  height: 100vh;
-}
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    height: 100vh;
+  }
 </style>

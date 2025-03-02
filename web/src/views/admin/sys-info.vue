@@ -1,11 +1,7 @@
 <template>
   <div class="page-view">
-    <a-spin v-bind:spinning="loading">
-      <a-descriptions
-          title="系统信息"
-          bordered
-          :column="{ lg: 3, md: 2, sm: 1 }"
-      >
+    <a-spin :spinning="loading">
+      <a-descriptions title="系统信息" bordered :column="{ lg: 3, md: 2, sm: 1 }">
         <a-descriptions-item label="系统名称">
           {{ data.sysName }}
         </a-descriptions-item>
@@ -24,18 +20,10 @@
         <a-descriptions-item label="处理器">
           {{ data.processor }}
         </a-descriptions-item>
-        <a-descriptions-item label="CPU负载">
-          {{ data.cpuLoad }}%
-        </a-descriptions-item>
-        <a-descriptions-item label="系统内存">
-          {{ data.memory }}G
-        </a-descriptions-item>
-        <a-descriptions-item label="内存使用">
-          {{ data.usedMemory }}G
-        </a-descriptions-item>
-        <a-descriptions-item label="内存利用率">
-          {{ data.percentMemory }}%
-        </a-descriptions-item>
+        <a-descriptions-item label="CPU负载"> {{ data.cpuLoad }}% </a-descriptions-item>
+        <a-descriptions-item label="系统内存"> {{ data.memory }}G </a-descriptions-item>
+        <a-descriptions-item label="内存使用"> {{ data.usedMemory }}G </a-descriptions-item>
+        <a-descriptions-item label="内存利用率"> {{ data.percentMemory }}% </a-descriptions-item>
         <a-descriptions-item label="系统语言">
           {{ data.sysLan }}
         </a-descriptions-item>
@@ -51,45 +39,45 @@
 </template>
 
 <script>
-import {sysInfoApi} from '/@/api/overview'
+  import { sysInfoApi } from '/@/api/overview';
 
-export default {
-  data () {
-    return {
-      loading: false,
-      data: {},
-    }
-  },
-  methods: {
-    getSysInfo () {
-      this.loading = true
-      sysInfoApi().then(res => {
-        this.loading = false
-        this.data = res.data
-      })
-    }
-  },
-  mounted () {
-    this.getSysInfo()
-  }
-}
+  export default {
+    data() {
+      return {
+        loading: false,
+        data: {},
+      };
+    },
+    mounted() {
+      this.getSysInfo();
+    },
+    methods: {
+      getSysInfo() {
+        this.loading = true;
+        sysInfoApi().then((res) => {
+          this.loading = false;
+          this.data = res.data;
+        });
+      },
+    },
+  };
 </script>
 
 <style lang="less" scoped>
-.table-wrap {
-  flex: 1;
-}
+  .table-wrap {
+    flex: 1;
+  }
 
-.page-view {
-  min-height: 100%;
-  background: #FFF;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-}
+  .page-view {
+    min-height: 100%;
+    background: #fff;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+  }
 
-.table-operation {
-  height: 50px;
-  text-align: right;
-}
+  .table-operation {
+    height: 50px;
+    text-align: right;
+  }
 </style>
