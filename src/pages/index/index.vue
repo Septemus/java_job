@@ -28,7 +28,7 @@
     </view>
     <view class="sticky">
       <view class="filter">
-        <view class="major">Java开发</view>
+        <view class="major" @click="toPreference">Java开发</view>
         <view class="search">
           <uni-icons type="search" class="magnifier"></uni-icons>
           <input confirm-type="search" placeholder="搜索职位/公司" />
@@ -90,6 +90,11 @@ onShow(() => {
 onMounted(() => {
   getThingList({});
 });
+const toPreference = () => {
+  uni.navigateTo({
+    url: "/pages/preference/index",
+  });
+};
 const swiperItems = reactive(["swiperitem1.png", "swiperitem2.png", "swiperitem3.png"]);
 const contentData = reactive({
   selectX: 0,
