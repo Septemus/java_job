@@ -2,7 +2,7 @@
 server.port: 9100
 server.servlet.context-path: /api
 
-BASE_LOCATION: /Users/joe/Documents/java/java_job
+BASE_LOCATION: /Users/joe/Documents/java/java_job_server
 DB_NAME: java_job
 
 spring:
