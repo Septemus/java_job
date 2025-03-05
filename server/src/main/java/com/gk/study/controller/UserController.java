@@ -137,9 +137,9 @@ public class UserController {
     }
 
     @Access(level = AccessLevel.ADMIN)
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST,consumes = {"application/json"})
     @Transactional
-    public APIResponse create(User user) throws IOException {
+    public APIResponse create(@RequestBody User user) throws IOException {
 
         if (!StringUtils.isEmpty(user.getUsername()) || !StringUtils.isEmpty(user.getPassword())) {
             // 查重
@@ -165,9 +165,9 @@ public class UserController {
     }
 
     @Access(level = AccessLevel.ADMIN)
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/update", method = RequestMethod.POST,consumes = {"application/json"})
     @Transactional
-    public APIResponse update(User user) throws IOException {
+    public APIResponse update(@RequestBody User user) throws IOException {
         // update不能修改密码，故置空
         user.setPassword(null);
         String avatar = saveAvatar(user);
