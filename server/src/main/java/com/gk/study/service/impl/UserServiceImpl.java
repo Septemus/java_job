@@ -73,7 +73,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             }
         }catch (Exception e){}
         user.setCreateTime(new Timestamp(System.currentTimeMillis()));
-        user.setRole(String.valueOf(User.NormalUser));
+        if(user.getRole() == null){
+            user.setRole(String.valueOf(User.NormalUser));
+        }
         userMapper.insert(user);
         return user;
     }
