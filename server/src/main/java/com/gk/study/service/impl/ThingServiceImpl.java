@@ -92,7 +92,12 @@ public class ThingServiceImpl extends ServiceImpl<ThingMapper, Thing> implements
                 long tagId=thingTag.getTagId();
                 return tagService.getTag(tagId).getTitle();
             }).collect(Collectors.toList());
+            List<Long> tagids = thingTags.stream().map((thingTag)->{
+                long tagId=thingTag.getTagId();
+                return tagId;
+            }).collect(Collectors.toList());
             thing.setTags(tags);
+            thing.setTagids(tagids);
         }
         return things;
     }
@@ -166,7 +171,7 @@ public class ThingServiceImpl extends ServiceImpl<ThingMapper, Thing> implements
         map.put("thing_id", thing.getId());
         thingTagMapper.deleteByMap(map);
         // 新增tag
-        if (thing.getTags() != null) {
+        if (thing.getTagids() != null) {
             for (Long tag : thing.getTagids()) {
                 ThingTag thingTag = new ThingTag();
                 thingTag.setThingId(thing.getId());
