@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -74,9 +75,9 @@ public class ThingController {
     }
 
     @Access(level = AccessLevel.ADMIN)
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/update", method = RequestMethod.POST,consumes = {"application/json"})
     @Transactional
-    public APIResponse update(Thing thing) throws IOException {
+    public APIResponse update(@RequestBody Thing thing) throws IOException {
         System.out.println(thing);
 //        String url = saveThing(thing);
 //        if(!StringUtils.isEmpty(url)) {
