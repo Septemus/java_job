@@ -73,10 +73,17 @@
               </a-col>
               <a-col span="12">
                 <a-form-item label="标签">
-                  <a-select mode="multiple" placeholder="请选择" allowClear v-model:value="modal.form.tags">
-                    <template v-for="item in modal.tagData">
+                  <a-select
+                    mode="multiple"
+                    placeholder="请选择"
+                    allowClear
+                    v-model:value="modal.form.tag_label_value"
+                    label-in-value
+                    :options="modal.allTagKeyValue"
+                  >
+                    <!-- <template v-for="item in modal.tagData" :key="item.id">
                       <a-select-option :value="item.id">{{ item.title }}</a-select-option>
-                    </template>
+                    </template> -->
                   </a-select>
                 </a-form-item>
               </a-col>
@@ -153,8 +160,8 @@
     },
     {
       title: '公司名称',
-      dataIndex: 'company_title',
-      key: 'company_title',
+      dataIndex: 'companyName',
+      key: 'companyName',
     },
     {
       title: '薪资水平',
@@ -220,11 +227,14 @@
     title: '',
     cData: [],
     tagData: [{}],
+    allTagKeyValue: [] as any[],
     form: {
       id: undefined,
       title: undefined,
       classificationId: undefined,
       tags: [],
+      tagids: [],
+      tag_label_value: [] as any[],
       status: undefined,
       location: undefined,
       salary: undefined,
@@ -274,7 +284,13 @@
       res.data.forEach((item, index) => {
         item.index = index + 1;
       });
-      modal.tagData = res.data;
+      // modal.tagData = res.data;
+      modal.allTagKeyValue = res.data.map((t) => {
+        return {
+          value: t.id,
+          label: t.title,
+        };
+      });
     });
   };
 
@@ -306,6 +322,7 @@
     modal.form.cover = undefined;
   };
   const handleEdit = (record: any) => {
+    debugger;
     resetModal();
     modal.visile = true;
     modal.editFlag = true;
@@ -314,6 +331,7 @@
     for (const key in modal.form) {
       modal.form[key] = undefined;
     }
+    modal.form.tag_label_value = [];
     for (const key in record) {
       if (record[key]) {
         modal.form[key] = record[key];
@@ -322,6 +340,13 @@
     if (modal.form.cover) {
       modal.form.coverUrl = BASE_URL + '/api/staticfiles/image/' + modal.form.cover;
       modal.form.cover = undefined;
+    }
+    let i = 0;
+    for (const label of modal.form.tags) {
+      modal.form.tag_label_value.push({
+        value: modal.form.tagids[i++],
+        label,
+      } as any);
     }
   };
 
@@ -358,6 +383,7 @@
     myform.value
       ?.validate()
       .then(() => {
+        debugger;
         const formData = new FormData();
         if (modal.editFlag) {
           formData.append('id', modal.form.id);
@@ -366,10 +392,10 @@
         if (modal.form.classificationId) {
           formData.append('classificationId', modal.form.classificationId);
         }
-        if (modal.form.tags) {
-          modal.form.tags.forEach(function (value) {
-            if (value) {
-              formData.append('tags[]', value);
+        if (modal.form.tag_label_value) {
+          modal.form.tag_label_value.forEach(function (lv) {
+            if (lv) {
+              formData.append('tagids[]', lv.value);
             }
           });
         }
